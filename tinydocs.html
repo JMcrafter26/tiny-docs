@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script>
+        // set startTimer to current time in milliseconds
+        window.startTimer = Date.now(); 
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css"/>
+
+    <style>
+      page {
+        display: none;
+      }
+
+      body {
+        max-width: 1200px;
+      }
+
+      nav {
+        margin: 0;
+        padding: 0;
+        width: 250px;
+        position: fixed;
+        height: 95vh;
+        overflow: auto; 
+        background-color: var(--background-alt);
+        border-radius: 10px;
+        transition: all 0.3s ease;
+      }
+
+      /* Sidebar links */
+      nav a {
+        display: block;
+        padding: 16px;
+        text-decoration: none;
+      }
+
+      /* Active/current link */
+      nav a.active {
+        font-weight: bold;
+      }
+
+      /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
+      div.content {
+        margin-left: 250px;
+        padding: 1px 16px;
+        height: 1000px;
+      }
+
+      .openBtn {
+        display: none;
+        position: fixed;
+        top: 20px;
+        left: 0px;
+        cursor: pointer;
+        background-color: var(--background-alt);
+        border: none;
+        color: var(--text);
+        /* border-radius: 5px; */
+        border-radius: 0 7px 7px 0;
+        padding: 5px 0px;
+
+        transition: transform 0.3s ease;
+      }
+
+      .openBtn span svg {
+        margin-top: 2px;
+        margin-bottom: -2px;
+        transition: transform 0.3s ease;
+      }
+
+      @media screen and (max-width: 700px) {
+        nav {
+          transform: translateX(-100%);
+          margin-left: -10px;
+          transition: transform 0.3s ease;
+        }
+
+        nav.active {
+          transform: translateX(0);
+          margin-left: 0;
+          transition: transform 0.3s ease;
+          border-radius: 10px 0 10px 10px;
+        }
+
+        div.content {
+          margin-left: 10px;
+          transition: margin-left 0.3s ease;
+        }
+
+        div.content.active {
+          margin-left: 270px;
+          transition: margin-left 0.3s ease;
+        }
+
+        .openBtn {
+          display: block;          
+        }
+
+        .openBtn.active {
+          transform: translateX(260px);
+          transition: transform 0.3s ease;
+        }
+
+        .openBtn.active span svg {
+          /* transform, mirror the svg by scaling it by -1 */
+          transform: scaleX(-1);
+          transition: transform 0.3s ease;
+        }
+      }
+
+      #navTitle {
+        font-size: 20px;
+        font-weight: bold;
+        padding: 16px;
+        text-decoration: none;
+        display: block;
+        text-align: center;
+        color: var(--text);
+      }
+
+
+        .skeleton {
+            /* Skeleton loader */
+            background: linear-gradient(90deg, var(--links) 25%, var(--focus) 50%, var(--links) 75%);
+            background-size: 200% 100%;
+            animation: pulse 1s infinite;
+            border-radius: 5px;
+            color: transparent;
+            display: inline-block;
+            line-height: 1;
+            width: 100%;
+        }
+
+        @keyframes pulse {
+            0% {
+                background-position: 200% 0;
+            }
+        }
+
+        noscript {
+            background: red;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+
+            /* center the noscript element */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            z-index: 1000;
+        }
+
+        .navFooter {
+            text-align: center;
+            margin-top: 20px;
+            cursor: pointer;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          padding: 10px;
+          text-align: center;
+          font-size: 12px;
+          color: var(--text);
+
+          /* no warp */
+          white-space: nowrap;
+
+          opacity: 0.4;
+        }
+
+        .navFooter:hover {
+          opacity: 1;
+        }
+
+        .navFooter a {
+          display: inline-block;
+          padding: 0;
+        }
+    
+        .navFooter svg {
+            transition: all .25s ease-in-out;
+            font-size: 12px;
+            height: 12px
+        }
+    
+        .navFooter:hover svg {
+            animation: electric .5s infinite;
+            animation-timing-function: ease-in-out
+        }
+    
+        .navFooter a {
+            transition: color .25s ease-in-out
+        }
+    
+        .navFooter:hover a {
+            color: #fedd48;
+            text-decoration: none
+        }
+    
+        @keyframes electric {
+            0% {
+                filter: url(#sharp-drop-shadow) drop-shadow(0 0 7px rgb(254, 221, 72, .7));
+                transform: rotate(0)
+            }
+    
+            25% {
+                filter: url(#sharp-drop-shadow) drop-shadow(0 0 10px #fedd48);
+                transform: rotate(2.5deg)
+            }
+    
+            50% {
+                filter: url(#sharp-drop-shadow) drop-shadow(0 0 12px #fedd48);
+                transform: rotate(5deg)
+            }
+    
+            75% {
+                filter: url(#sharp-drop-shadow) drop-shadow(0 0 15px #fedd48);
+                transform: rotate(2.5deg)
+            }
+    
+            100% {
+                filter: url(#sharp-drop-shadow) drop-shadow(0 0 16px rgb(254, 221, 72, .7));
+                transform: rotate(0)
+            }
+        }
+
+    </style>
+
+
+  </head>
+  <body>
+    <noscript><h1>Oh no!</h1>
+      <p>This page requires JavaScript to work. Please enable JavaScript in your browser settings.</p>
+        <p><a target="_blank" href="https://www.enable-javascript.com/">How to enable JavaScript</a></p>
+    </noscript>
+
+    <button class="openBtn">
+      <span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>
+      </span>
+    </button>
+    <nav data-title="" data-credits="true">
+      <a href="?" id="navTitle"></a>
+      <!-- a navbar at the left side of the page, (collapsed on mobile -> expandable on click). Similar to justthedocs or mkdocs -->
+      <a href="?page=index">Home</a>
+
+    
+    </nav>
+
+    <div class="content">
+      <page data-pageId="index" data-title="Home">
+
+        # Tiny Documentation Framework
+        
+        What is this? This is a tiny markdown
+
+        documentation framework that uses Snarkdown to convert markdown to HTML.
+        It's powered by a simple JavaScript function that decompresses a gzip
+        string and inserts the HTML into the document.
+      </page>
+      <page data-pageId="snarkdown" data-title="Snarkdown">
+
+        # It's powered by Snarkdown!
+        [Snarkdown](https://github.com/developit/snarkdown) is a dead simple 1kb
+        markdown parser that converts markdown to HTML.
+
+        ## Example:
+
+        ## Snarkdown
+
+![snarkdown](https://cdn.jsdelivr.net/emojione/assets/svg/1f63c.svg)
+
+*[Snarkdown](http://github.com/developit/snarkdown)* is __easy__ to `use`!
+
+Here's an [**important** anchor link](#example).
+
+Two newlines creates a line break.
+
+Or, end a line with two spaces.  
+Just like that!
+
+Code & Poetry
+-------------
+
+    You can also indent
+    blocks to display
+    code or poetry.
+    
+    Indented code/poetry blocks  
+    can be hard-wrapped.
+
+**Or, wrap your code in three backticks:**
+
+```JavaScript
+function codeBlocks() {
+    return 'Can be inserted';
+}
+```
+
+
+### Block Quotes
+
+> You can insert quotes by
+> preceeding each line with `>`.
+>
+> Blockquotes can also contain line  
+> breaks.
+
+
+## Lists
+
+- Unordered
+* Lists
++ Of mixed type
+
+1. Ordered
+2. Lists
+4. Numbers are ignored
+
+
+      </page>
+
+      <page data-pageId="about"> # About
+        This is the about page </page>
+      <page data-pageId="404"> # 404 </page>
+
+      <div>
+        <a href="?page=index">Index</a>
+        <a href="?page=about">About</a>
+      </div>
+    </div>
+
+    <script id="snarkdown">
+      !(function (e, n) {
+        "object" == typeof exports && "undefined" != typeof module
+          ? (module.exports = n())
+          : "function" == typeof define && define.amd
+          ? define(n)
+          : ((e = e || self).snarkdown = n());
+      })(this, function () {
+        var e = {
+          "": ["<em>", "</em>"],
+          _: ["<strong>", "</strong>"],
+          "*": ["<strong>", "</strong>"],
+          "~": ["<s>", "</s>"],
+          "\n": ["<br />"],
+          " ": ["<br />"],
+          "-": ["<hr />"],
+        };
+
+        function n(e) {
+          return e.replace(
+            RegExp("^" + (e.match(/^(\t| )+/) || "")[0], "gm"),
+            ""
+          );
+        }
+
+        function r(e) {
+          return (e + "")
+            .replace(/"/g, "&quot;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+        }
+        return function t(o, a) {
+          var c,
+            s,
+            l,
+            g,
+            u,
+            p =
+              /((?:^|\n+)(?:\n---+|\* \*(?: \*)+)\n)|(?:^``` *(\w*)\n([\s\S]*?)\n```$)|((?:(?:^|\n+)(?:\t|  {2,}).+)+\n*)|((?:(?:^|\n)([>*+-]|\d+\.)\s+.*)+)|(?:!\[([^\]]*?)\]\(([^)]+?)\))|(\[)|(\](?:\(([^)]+?)\))?)|(?:(?:^|\n+)([^\s].*)\n(-{3,}|={3,})(?:\n+|$))|(?:(?:^|\n+)(#{1,6})\s*(.+)(?:\n+|$))|(?:`([^`].*?)`)|(  \n\n*|\n{2,}|__|\*\*|[_*]|~~)/gm,
+            f = [],
+            i = "",
+            d = a || {},
+            m = 0;
+
+          function h(n) {
+            var r = e[n[1] || ""],
+              t = f[f.length - 1] == n;
+            return r ? (r[1] ? (t ? f.pop() : f.push(n), r[0 | t]) : r[0]) : n;
+          }
+
+          function $() {
+            for (var e = ""; f.length; ) e += h(f[f.length - 1]);
+            return e;
+          }
+          for (
+            o = o
+              .replace(/^\[(.+?)\]:\s*(.+)$/gm, function (e, n, r) {
+                return (d[n.toLowerCase()] = r), "";
+              })
+              .replace(/^\n+|\n+$/g, "");
+            (l = p.exec(o));
+
+          )
+            (s = o.substring(m, l.index)),
+              (m = p.lastIndex),
+              (c = l[0]),
+              s.match(/[^\\](\\\\)*\\$/) ||
+                ((u = l[3] || l[4])
+                  ? (c =
+                      '<pre class="code ' +
+                      (l[4] ? "poetry" : l[2].toLowerCase()) +
+                      '"><code' +
+                      (l[2]
+                        ? ' class="language-' + l[2].toLowerCase() + '"'
+                        : "") +
+                      ">" +
+                      n(r(u).replace(/^\n+|\n+$/g, "")) +
+                      "</code></pre>")
+                  : (u = l[6])
+                  ? (u.match(/\./) && (l[5] = l[5].replace(/^\d+/gm, "")),
+                    (g = t(n(l[5].replace(/^\s*[>*+.-]/gm, "")))),
+                    ">" == u
+                      ? (u = "blockquote")
+                      : ((u = u.match(/\./) ? "ol" : "ul"),
+                        (g = g.replace(/^(.*)(\n|$)/gm, "<li>$1</li>"))),
+                    (c = "<" + u + ">" + g + "</" + u + ">"))
+                  : l[8]
+                  ? (c = '<img src="' + r(l[8]) + '" alt="' + r(l[7]) + '">')
+                  : l[10]
+                  ? ((i = i.replace(
+                      "<a>",
+                      '<a href="' + r(l[11] || d[s.toLowerCase()]) + '">'
+                    )),
+                    (c = $() + "</a>"))
+                  : l[9]
+                  ? (c = "<a>")
+                  : l[12] || l[14]
+                  ? (c =
+                      "<" +
+                      (u = "h" + (l[14] ? l[14].length : l[13] > "=" ? 1 : 2)) +
+                      ">" +
+                      t(l[12] || l[15], d) +
+                      "</" +
+                      u +
+                      ">")
+                  : l[16]
+                  ? (c = "<code>" + r(l[16]) + "</code>")
+                  : (l[17] || l[1]) && (c = h(l[17] || "--"))),
+              (i += s),
+              (i += c);
+          return (i + o.substring(m) + $()).replace(/^\n+|\n+$/g, "");
+        };
+      });
+    </script>
+<!-- <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.10.0/build/highlight.min.js"></script> -->
+    <script>
+      function showPage(pageId) {
+        const pages = document.querySelectorAll("page");
+        // mass hide all pages
+        pages.forEach((page) => {
+          page.style.display = "none";
+          if (page.getAttribute("data-pageId") === pageId) {
+            page.style.display = "block";
+          }
+        });
+
+        // if the pageId does not exist, show the 404 page
+        if (!document.querySelector(`page[data-pageId="${pageId}"]`)) {
+          showPage("404");
+          return;
+        }
+        // show the page with the pageId
+        const page = document.querySelector(`page[data-pageId="${pageId}"]`);
+      }
+
+      function updateUrl(pageId) {
+        const url = new URL(window.location);
+        url.searchParams.set("page", pageId);
+        window.history.pushState({}, "", url);
+      }
+
+      function applyMarkdown(currentPage) {
+        const pages = document.querySelectorAll("page");
+        // use snarkdown to convert markdown to html
+        pages.forEach((page) => {
+            if (page.getAttribute("data-pageId") === currentPage) {
+                return;
+            }
+          let markdown = page.textContent;
+          // remove the indentation before the # to make it work, but do not remove line breaks
+          markdown = markdown.replace(/^ +/gm, "");
+
+          console.log(markdown);
+          const html = snarkdown(markdown);
+          console.log(html);
+          page.innerHTML = html;
+        });
+      }
+
+      function buildNav() {
+        const nav = document.querySelector("nav");
+        const pages = document.querySelectorAll("page");
+        const navTitle = document.createElement("a");
+
+        // empty the nav
+        nav.innerHTML = "";
+
+        navTitle.href = "?";
+        // if document title is empty, use the first h1 element in the index page
+        if (!document.title) {
+          document.title = document.querySelector(
+            'page[data-pageId="index"] h1'
+          )?.textContent;
+        }
+        // if data-title is set in the nav div, use that as the title
+        if (nav.getAttribute("data-title")) {
+          navTitle.textContent = nav.getAttribute("data-title");
+        } else {
+          navTitle.textContent = document.title;
+        }
+        navTitle.id = "navTitle";
+        nav.insertBefore(navTitle, nav.firstChild);
+
+        pages.forEach((page) => {
+          const pageId = page.getAttribute("data-pageId");
+          let title;
+          // get the first h1 element in the page
+          // if page div has data-title, use that as the title
+          if (page.getAttribute("data-title")) {
+            title = page.getAttribute("data-title");
+          } else {
+            title = page.querySelector("h1")?.textContent;
+          }
+
+        // page id is 404, do not add to the nav
+            if (pageId === "404") {
+                return;
+            }
+
+          const a = document.createElement("a");
+          a.href = `?page=${pageId}`;
+          a.textContent = title;
+          nav.appendChild(a);
+        });
+        
+        const navFooter = document.createElement("div");
+        navFooter.classList.add("navFooter");
+        navFooter.innerHTML = `<hr><svg class="feather feather-zap" fill=none stroke=currentColor stroke-linecap=round stroke-linejoin=round
+            stroke-width=2 viewBox="0 0 24 24" xmlns=http://www.w3.org/2000/svg>
+            <defs>
+                <filter height=200% id=sharp-drop-shadow width=200% x=-50% y=-50%>
+                    <feGaussianBlur in=SourceAlpha stdDeviation=1 />
+                    <feOffset dx=0 dy=0 result=offsetblur />
+                    <feFlood flood-color=#fedd48 />
+                    <feComposite in2=offsetblur operator=in />
+                    <feMerge>
+                        <feMergeNode />
+                        <feMergeNode in=SourceGraphic />
+                    </feMerge>
+                </filter>
+            </defs>
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+        </svg> Powered by <a alt="upLoadly" href=https://github.com/JMcrafter26/tiny-docs target=_blank>Tiny Docs</a>
+    </div>`;
+        nav.appendChild(navFooter);
+
+      }
+
+      function prepareCurrentPage(pageId) {
+        console.log("Preparing " + pageId);
+        let index = document.querySelector('page[data-pageId="' + pageId + '"]');
+
+        // render the index page
+        index.textContent = index.textContent.replace(/^ +/gm, "");
+        index.innerHTML = snarkdown(index.textContent);
+        console.log(pageId + " prepared");
+      }
+
+      function init() {
+        // if ?page is in the URL, show that page
+        const urlParams = new URLSearchParams(window.location.search);
+        let page = urlParams.get("page");
+        if (page) {
+          showPage(page);
+        } else {
+          showPage("index");
+          page = "index";
+        }
+
+        // add event listeners if url changes
+        window.addEventListener("popstate", () => {
+          const urlParams = new URLSearchParams(window.location.search);
+          const page = urlParams.get("page");
+          showPage(page);
+        });
+
+        prepareCurrentPage(page);
+
+        // wait 2 seconds before applying markdown and building the nav
+          applyMarkdown(page);
+          buildNav();
+
+
+        // add event listeners to all links with href="?page=..."
+        document.querySelectorAll("a[href^='?page=']").forEach((a) => {
+          a.addEventListener("click", (e) => {
+            e.preventDefault();
+            const pageId = a.getAttribute("href").split("=")[1];
+            showPage(pageId);
+            updateUrl(pageId);
+          });
+        });
+
+        // add event listener to the open button, animate the nav sliding in from the left
+        const openBtn = document.querySelector(".openBtn");
+        // toggle active class on the nav
+        openBtn.addEventListener("click", () => {
+          document.querySelector("nav").classList.toggle("active");
+          openBtn.classList.toggle("active");
+          document.querySelector(".content").classList.toggle("active");
+        });
+
+
+
+
+
+        const endTime = Date.now();
+        console.log("Load and render time: ", endTime - window.startTimer + "ms");
+
+
+      }
+
+    // on Dom finish loading, call init
+    document.addEventListener("DOMContentLoaded", init);
+    </script>
+  </body>
+</html>
