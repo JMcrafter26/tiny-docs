@@ -25,7 +25,7 @@ os.mkdir(output_dir)
 
 # ask the user for a html file
 def ask_for_html_file():
-    return "E:\\dev\\tinyMarkdown\\page.html"
+    # return "E:\\dev\\tinyMarkdown\\page.html"
     html_file = input('Enter the path to the html file: ')
     if not os.path.exists(html_file):
         print('File does not exist')

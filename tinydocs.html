@@ -49,6 +49,11 @@
         font-weight: bold;
       }
 
+      nav .page.activeBg {
+        background-color: var(--background);
+        border-radius: 5px;
+      }
+
       /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
       div.content {
         margin-left: 250px;
@@ -304,7 +309,7 @@
         ## Planned feature
         
         - [ ] 🔎 Search
-        - [ ] 📖 Table of contents
+        - [ ] ~~📖 Table of contents~~ ✅
         - [ ] 🌐 Full Offline support
         - [ ] 🛠️ Import from GitHub Wiki
         - [ ] 📝 (Web) Builder
@@ -317,7 +322,7 @@
         [Snarkdown](https://github.com/developit/snarkdown) is a dead simple 1kb
         markdown parser that converts markdown to HTML.
 
-        ## Example:
+        ## Example
 
         ## Snarkdown
 
@@ -375,8 +380,12 @@ function codeBlocks() {
 
       <page data-pageId="about"> # About
         This is the about page </page>
-      <page data-pageId="404"> # 404 
-        This page does not exist
+      <page data-pageId="404">
+        # 404
+        
+        The page you are looking for does not exist
+
+        [Go back to the home page](?page=index)
       </page>
 
       <footer>
@@ -596,11 +605,6 @@ function snarkdown(md) {
           pageTitle.href = `?page=${pageId}`;
           pageTitle.textContent = title;
           pageTitle.classList.add("pageTitle");
-          
-          // if the page is the current page, add the active class
-          if (pageId === currentPage) {
-            pageTitle.classList.add("active");
-          }
 
           pageDiv.appendChild(pageTitle);
 
@@ -646,6 +650,7 @@ function snarkdown(md) {
     </div>`;
         nav.appendChild(navFooter);
 
+
       }
 
       function prepareCurrentPage(pageId) {
@@ -656,6 +661,25 @@ function snarkdown(md) {
         index.textContent = index.textContent.replace(/^ +/gm, "");
         index.innerHTML = snarkdown(index.textContent);
         console.log(pageId + " prepared");
+      }
+
+      function updateNavActive(pageId, hash = null) {
+        if (hash) {
+          pageId += "#" + hash;
+        }
+        const navLinks = document.querySelectorAll("nav a");
+        navLinks.forEach((link) => {
+          if (link.getAttribute("href") === `?page=${pageId}`) {
+            navLinks.forEach((link) => {
+              link.classList.remove("active");
+              link.parentElement.classList.remove("activeBg");
+            });
+            link.classList.add("active");
+            // add activeBg class to the parent div
+            link.parentElement.classList.add("activeBg");
+          }
+        });
+
       }
 
       function init() {
@@ -685,6 +709,7 @@ function snarkdown(md) {
         // wait 2 seconds before applying markdown and building the nav
           applyMarkdown(page);
           buildNav(page);
+          updateNavActive(page + window.location.hash);
 
 
         // add event listeners to all links with href="?page=..." (# optional, if it exists, scroll to the element with that id)
@@ -706,17 +731,26 @@ function snarkdown(md) {
 
             console.log('pageId', pageId);
             showPage(pageId);
+            updateNavActive(pageId, hash);
             
 
             // scroll to the element with the id
             if (hash) {
               const element = document.querySelector(`#${hash}`);
               if (element) {
+                window.userScrolling = true;
                 element.scrollIntoView({ behavior: "smooth" });
+                setTimeout(() => {
+                  window.userScrolling = false;
+                }, 1000);
               }
             } else {
               // scroll to the top of the page, smooth scroll
+              window.userScrolling = true;
               window.scrollTo({ top: 0, behavior: "smooth" });
+              setTimeout(() => {
+                window.userScrolling = false;
+              }, 1000);
             }
           });
         });
@@ -730,10 +764,62 @@ function snarkdown(md) {
           document.querySelector(".content").classList.toggle("active");
         });
 
+        window.userScrolling = true;
+
+        // add scroll event listener to update the active nav link based on the scroll position
+        // the h tag that is visible and closest to the top of the page is the active link
+        // or if scrolled to the bottom of the page, the last link is active
+        window.addEventListener("scroll", () => {
+          if (window.userScrolling === true) {
+            return;
+          }
+
+          // get current page from url
+          const urlParams = new URLSearchParams(window.location.search);
+          const pageId = urlParams.get("page");
+
+          
+          const currentPages = document.querySelectorAll("page[data-pageId='" + pageId + "']");
+          if (currentPages.length === 0) {
+            return;
+          }
+          const current = currentPages[0];
+          const headings = current.querySelectorAll("[data-anchor]");
 
 
 
 
+
+          let activeHeading = null;
+          // if scrolled to the bottom of the page, set the last link as active
+          if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+            activeHeading = headings[headings.length - 1];
+          } else {
+            headings.forEach((heading) => {
+              if (
+                heading.getBoundingClientRect().top > 0 &&
+                heading.getBoundingClientRect().top < 200
+              ) {
+                activeHeading = heading;
+                // break out of the loop
+                return;
+              }
+            });
+          }
+
+          if (activeHeading) {
+            const pageId = activeHeading.closest("page").getAttribute("data-pageId");
+            const hash = activeHeading.getAttribute("id");
+            updateNavActive(pageId, hash);
+            updateUrl(pageId, hash);
+            console.log("active heading", activeHeading);
+          }
+        });
+
+
+        setTimeout(() => {
+          window.userScrolling = false;
+        }, 1000);
         const endTime = Date.now();
         console.log("Load and render time: ", endTime - window.startTimer + "ms");
 
