@@ -23,9 +23,9 @@ I made this because I wanted a simple way to write documentation and have it in 
 
 # Demo
 
-[Check out the demo](https://raw.githack.com/JMcrafter26/tiny-docs/main/tinydocs.html)
+[Check out the demo](https://raw.githack.com/JMcrafter26/tiny-docs/main/tinydocs-local.html)
 
-## How to us
+## How to use
 
 > This project is still in development. Some features may not work as expected
 1. Download the HTML file (or clone the repo)
