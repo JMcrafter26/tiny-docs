@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <script>
-        // set startTimer to current time in milliseconds
-        window.startTimer = Date.now(); 
-    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title></title>
+    <script>window.startTimer = Date.now();</script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css"/>
 
     <style>
@@ -32,10 +29,19 @@
       }
 
       /* Sidebar links */
-      nav a {
+      nav .page .pageTitle {
         display: block;
-        padding: 16px;
+        padding: 5px 0px 0px 16px;
         text-decoration: none;
+        font-size: 17px;
+      }
+
+      nav .page .pageHeading {
+        display: block;
+        padding: 2px 16px;
+        margin-left: 10px;
+        text-decoration: none;
+        font-size: 15px;
       }
 
       /* Active/current link */
@@ -46,8 +52,9 @@
       /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
       div.content {
         margin-left: 250px;
+        margin-bottom: 20px;
         padding: 1px 16px;
-        height: 1000px;
+        /* height: 1000px; */
       }
 
       .openBtn {
@@ -232,6 +239,13 @@
             }
         }
 
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 0px;
+            font-size: 12px;
+        }
+
     </style>
 
 
@@ -258,13 +272,47 @@
     <div class="content">
       <page data-pageId="index" data-title="Home">
 
-        # Tiny Documentation Framework
+        # Tiny Docs
         
-        What is this? This is a tiny markdown
+        ## What is Tiny Docs?
 
-        documentation framework that uses Snarkdown to convert markdown to HTML.
-        It's powered by a simple JavaScript function that decompresses a gzip
-        string and inserts the HTML into the document.
+        Tiny Docs is a simple and lightweight (single file!) documentation template that allows you to write documentation in markdown and have it rendered as a static site.
+
+        ## Features
+
+        - 📄 **Single file** - Just one HTML file!
+        - 📝 **Markdown** - Write documentation in [markdown](?page=snarkdown)
+        - 📦 **Zero dependencies** - No need for a build step or package manager. (Although there are tools to make it even smaller)
+        - 🎨 **Customizable** - Change the CSS to fit your style
+        - 📱 **Responsive** - Works on all devices
+        - 🚀 **Fast** - Loads _extremely_ fast
+        - 🌙 **Dark mode** - Toggle between light and dark mode
+        - 🎉 **Open source** - [Fork on GitHub](https://github.com/JMcrafter26/tiny-docs)
+
+        ## Use cases
+
+        - Personal documentation
+        - Project documentation
+        - Software documentation
+        - _Anything_ that needs documentation!
+
+        I made this because I wanted a simple way to write documentation and have it in a single file. I hope you find it useful! ⭐
+
+        ## How to use
+
+        1. Download the HTML file (or clone the repo)
+        1. Open the file in your text editor
+        1. Write and customize your documentation
+
+        ## Planned features
+
+        - [ ] 🔎 Search
+        - [x] 📖 Table of contents
+        - [ ] 🌐 Offline support
+        - [ ] 🛠️ Import from GitHub Wiki
+        - [ ] 📝 (Web) Builder
+        - [ ] 📤 Export to PDF/Markdown/HTML
+        
       </page>
       <page data-pageId="snarkdown" data-title="Snarkdown">
 
@@ -330,127 +378,137 @@ function codeBlocks() {
 
       <page data-pageId="about"> # About
         This is the about page </page>
-      <page data-pageId="404"> # 404 </page>
+      <page data-pageId="404"> # 404 
+        This page does not exist
+      </page>
 
-      <div>
-        <a href="?page=index">Index</a>
-        <a href="?page=about">About</a>
-      </div>
+      <footer>
+        <p>&copy; 2024 Your Company</p>
+      </footer>
     </div>
 
+
     <script id="snarkdown">
-      !(function (e, n) {
-        "object" == typeof exports && "undefined" != typeof module
-          ? (module.exports = n())
-          : "function" == typeof define && define.amd
-          ? define(n)
-          : ((e = e || self).snarkdown = n());
-      })(this, function () {
-        var e = {
-          "": ["<em>", "</em>"],
-          _: ["<strong>", "</strong>"],
-          "*": ["<strong>", "</strong>"],
-          "~": ["<s>", "</s>"],
-          "\n": ["<br />"],
-          " ": ["<br />"],
-          "-": ["<hr />"],
-        };
+    const TAGS = {
+	'': ['<em>','</em>'],
+	_: ['<strong>','</strong>'],
+	'*': ['<strong>','</strong>'],
+	'~': ['<s>','</s>'],
+	'\n': ['<br />'],
+	' ': ['<br />'],
+	'-': ['<hr />']
+};
 
-        function n(e) {
-          return e.replace(
-            RegExp("^" + (e.match(/^(\t| )+/) || "")[0], "gm"),
-            ""
-          );
-        }
+/** Outdent a string based on the first indented line's leading whitespace
+ *	@private
+ */
+function outdent(str) {
+	return str.replace(RegExp('^'+(str.match(/^(\t| )+/) || '')[0], 'gm'), '');
+}
 
-        function r(e) {
-          return (e + "")
-            .replace(/"/g, "&quot;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;");
-        }
-        return function t(o, a) {
-          var c,
-            s,
-            l,
-            g,
-            u,
-            p =
-              /((?:^|\n+)(?:\n---+|\* \*(?: \*)+)\n)|(?:^``` *(\w*)\n([\s\S]*?)\n```$)|((?:(?:^|\n+)(?:\t|  {2,}).+)+\n*)|((?:(?:^|\n)([>*+-]|\d+\.)\s+.*)+)|(?:!\[([^\]]*?)\]\(([^)]+?)\))|(\[)|(\](?:\(([^)]+?)\))?)|(?:(?:^|\n+)([^\s].*)\n(-{3,}|={3,})(?:\n+|$))|(?:(?:^|\n+)(#{1,6})\s*(.+)(?:\n+|$))|(?:`([^`].*?)`)|(  \n\n*|\n{2,}|__|\*\*|[_*]|~~)/gm,
-            f = [],
-            i = "",
-            d = a || {},
-            m = 0;
+/** Encode special attribute characters to HTML entities in a String.
+ *	@private
+ */
+function encodeAttr(str) {
+	return (str+'').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
 
-          function h(n) {
-            var r = e[n[1] || ""],
-              t = f[f.length - 1] == n;
-            return r ? (r[1] ? (t ? f.pop() : f.push(n), r[0 | t]) : r[0]) : n;
-          }
+/** Parse Markdown into an HTML String. */
+function parse(md, prevLinks) {
+	let tokenizer = /((?:^|\n+)(?:\n---+|\* \*(?: \*)+)\n)|(?:^``` *(\w*)\n([\s\S]*?)\n```$)|((?:(?:^|\n+)(?:\t|  {2,}).+)+\n*)|((?:(?:^|\n)([>*+-]|\d+\.)\s+.*)+)|(?:!\[([^\]]*?)\]\(([^)]+?)\))|(\[)|(\](?:\(([^)]+?)\))?)|(?:(?:^|\n+)([^\s].*)\n(-{3,}|={3,})(?:\n+|$))|(?:(?:^|\n+)(#{1,6})\s*(.+)(?:\n+|$))|(?:`([^`].*?)`)|(  \n\n*|\n{2,}|__|\*\*|[_*]|~~)/gm,
+		context = [],
+		out = '',
+		links = prevLinks || {},
+		last = 0,
+		chunk, prev, token, inner, t;
 
-          function $() {
-            for (var e = ""; f.length; ) e += h(f[f.length - 1]);
-            return e;
-          }
-          for (
-            o = o
-              .replace(/^\[(.+?)\]:\s*(.+)$/gm, function (e, n, r) {
-                return (d[n.toLowerCase()] = r), "";
-              })
-              .replace(/^\n+|\n+$/g, "");
-            (l = p.exec(o));
+	function tag(token) {
+		let desc = TAGS[token[1] || ''];
+		let end = context[context.length-1] == token;
+		if (!desc) return token;
+		if (!desc[1]) return desc[0];
+		if (end) context.pop();
+		else context.push(token);
+		return desc[end|0];
+	}
 
-          )
-            (s = o.substring(m, l.index)),
-              (m = p.lastIndex),
-              (c = l[0]),
-              s.match(/[^\\](\\\\)*\\$/) ||
-                ((u = l[3] || l[4])
-                  ? (c =
-                      '<pre class="code ' +
-                      (l[4] ? "poetry" : l[2].toLowerCase()) +
-                      '"><code' +
-                      (l[2]
-                        ? ' class="language-' + l[2].toLowerCase() + '"'
-                        : "") +
-                      ">" +
-                      n(r(u).replace(/^\n+|\n+$/g, "")) +
-                      "</code></pre>")
-                  : (u = l[6])
-                  ? (u.match(/\./) && (l[5] = l[5].replace(/^\d+/gm, "")),
-                    (g = t(n(l[5].replace(/^\s*[>*+.-]/gm, "")))),
-                    ">" == u
-                      ? (u = "blockquote")
-                      : ((u = u.match(/\./) ? "ol" : "ul"),
-                        (g = g.replace(/^(.*)(\n|$)/gm, "<li>$1</li>"))),
-                    (c = "<" + u + ">" + g + "</" + u + ">"))
-                  : l[8]
-                  ? (c = '<img src="' + r(l[8]) + '" alt="' + r(l[7]) + '">')
-                  : l[10]
-                  ? ((i = i.replace(
-                      "<a>",
-                      '<a href="' + r(l[11] || d[s.toLowerCase()]) + '">'
-                    )),
-                    (c = $() + "</a>"))
-                  : l[9]
-                  ? (c = "<a>")
-                  : l[12] || l[14]
-                  ? (c =
-                      "<" +
-                      (u = "h" + (l[14] ? l[14].length : l[13] > "=" ? 1 : 2)) +
-                      ">" +
-                      t(l[12] || l[15], d) +
-                      "</" +
-                      u +
-                      ">")
-                  : l[16]
-                  ? (c = "<code>" + r(l[16]) + "</code>")
-                  : (l[17] || l[1]) && (c = h(l[17] || "--"))),
-              (i += s),
-              (i += c);
-          return (i + o.substring(m) + $()).replace(/^\n+|\n+$/g, "");
-        };
-      });
+	function flush() {
+		let str = '';
+		while (context.length) str += tag(context[context.length-1]);
+		return str;
+	}
+
+	md = md.replace(/^\[(.+?)\]:\s*(.+)$/gm, (s, name, url) => {
+		links[name.toLowerCase()] = url;
+		return '';
+	}).replace(/^\n+|\n+$/g, '');
+
+	while ( (token=tokenizer.exec(md)) ) {
+		prev = md.substring(last, token.index);
+		last = tokenizer.lastIndex;
+		chunk = token[0];
+		if (prev.match(/[^\\](\\\\)*\\$/)) {
+			// escaped
+		}
+		// Code/Indent blocks:
+		else if (t = (token[3] || token[4])) {
+			chunk = '<pre class="code '+(token[4]?'poetry':token[2].toLowerCase())+'"><code'+(token[2] ? ` class="language-${token[2].toLowerCase()}"` : '')+'>'+outdent(encodeAttr(t).replace(/^\n+|\n+$/g, ''))+'</code></pre>';
+		}
+		// > Quotes, -* lists:
+		else if (t = token[6]) {
+			if (t.match(/\./)) {
+				token[5] = token[5].replace(/^\d+/gm, '');
+			}
+			inner = parse(outdent(token[5].replace(/^\s*[>*+.-]/gm, '')));
+			if (t=='>') t = 'blockquote';
+			else {
+				t = t.match(/\./) ? 'ol' : 'ul';
+				inner = inner.replace(/^(.*)(\n|$)/gm, '<li>$1</li>');
+			}
+			chunk = '<'+t+'>' + inner + '</'+t+'>';
+		}
+		// Images:
+		else if (token[8]) {
+			chunk = `<img src="${encodeAttr(token[8])}" alt="${encodeAttr(token[7])}">`;
+		}
+		// Links:
+		else if (token[10]) {
+			out = out.replace('<a>', `<a href="${encodeAttr(token[11] || links[prev.toLowerCase()])}">`);
+			chunk = flush() + '</a>';
+		}
+		else if (token[9]) {
+			chunk = '<a>';
+		}
+		// Headings:
+		else if (token[12] || token[14]) {
+			t = 'h' + (token[14] ? token[14].length : (token[13]>'=' ? 1 : 2));
+      console.log(token[12]);
+      let anchor;
+      if (token[12]) {
+        anchor = token[12].toLowerCase().replace(/[^a-z0-9]/g, '-');
+      } else {
+        anchor = token[15].toLowerCase().replace(/[^a-z0-9]/g, '-');
+      }
+      chunk = '<'+t+' id="'+anchor+'" data-anchor>'+parse(token[12] || token[15], links)+'</'+t+'>';
+		}
+		// `code`:
+		else if (token[16]) {
+			chunk = '<code>'+encodeAttr(token[16])+'</code>';
+		}
+		// Inline formatting: *em*, **strong** & friends
+		else if (token[17] || token[1]) {
+			chunk = tag(token[17] || '--');
+		}
+		out += prev;
+		out += chunk;
+	}
+
+	return (out + md.substring(last) + flush()).replace(/^\n+|\n+$/g, '');
+}
+
+function snarkdown(md) {
+  return parse(md);
+}
     </script>
 <!-- <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.10.0/build/highlight.min.js"></script> -->
     <script>
@@ -473,10 +531,12 @@ function codeBlocks() {
         const page = document.querySelector(`page[data-pageId="${pageId}"]`);
       }
 
-      function updateUrl(pageId) {
-        const url = new URL(window.location);
-        url.searchParams.set("page", pageId);
-        window.history.pushState({}, "", url);
+      function updateUrl(pageId, hash) {
+        let url = `?page=${pageId}`;
+        if (hash) {
+          url += `#${hash}`;
+        }
+        window.history.pushState({ pageId: pageId }, "", url);
       }
 
       function applyMarkdown(currentPage) {
@@ -490,14 +550,14 @@ function codeBlocks() {
           // remove the indentation before the # to make it work, but do not remove line breaks
           markdown = markdown.replace(/^ +/gm, "");
 
-          console.log(markdown);
+          // console.log(markdown);
           const html = snarkdown(markdown);
-          console.log(html);
+          // console.log(html);
           page.innerHTML = html;
         });
       }
 
-      function buildNav() {
+      function buildNav(currentPage) {
         const nav = document.querySelector("nav");
         const pages = document.querySelectorAll("page");
         const navTitle = document.createElement("a");
@@ -537,12 +597,43 @@ function codeBlocks() {
                 return;
             }
 
-          const a = document.createElement("a");
-          a.href = `?page=${pageId}`;
-          a.textContent = title;
-          nav.appendChild(a);
+          const pageDiv = document.createElement("div");
+          pageDiv.classList.add("page");
+
+
+          const pageTitle = document.createElement("a");
+          pageTitle.href = `?page=${pageId}`;
+          pageTitle.textContent = title;
+          pageTitle.classList.add("pageTitle");
+          
+          // if the page is the current page, add the active class
+          if (pageId === currentPage) {
+            pageTitle.classList.add("active");
+          }
+
+          pageDiv.appendChild(pageTitle);
+
+          // add the page heading to the nav
+          // search for all h tags in the page
+          let headings = page.querySelectorAll("h1, h2, h3, h4, h5, h6");
+          // remove the first h1 element
+          // headings = Array.from(headings).slice(1);
+          headings.forEach((heading) => {
+            const pageHeading = document.createElement("a");
+            pageHeading.href = `?page=${pageId}#${heading.getAttribute("id")}`;
+            pageHeading.textContent = heading.textContent;
+            // based on what h tag it is, change the left margin
+            pageHeading.style.marginLeft = `${((parseInt(heading.tagName[1]) - 1) * 20) + 10}px`;
+            pageHeading.classList.add("pageHeading");
+            pageDiv.appendChild(pageHeading);
+          });
+
+          console.log(pageDiv);
+
+          nav.appendChild(pageDiv);
+
         });
-        
+
         const navFooter = document.createElement("div");
         navFooter.classList.add("navFooter");
         navFooter.innerHTML = `<hr><svg class="feather feather-zap" fill=none stroke=currentColor stroke-linecap=round stroke-linejoin=round
@@ -581,6 +672,10 @@ function codeBlocks() {
         const urlParams = new URLSearchParams(window.location.search);
         let page = urlParams.get("page");
         if (page) {
+          // check if the page exists, if it does not, show the 404 page
+          if (!document.querySelector(`page[data-pageId="${page}"]`)) {
+            page = "404";
+          }
           showPage(page);
         } else {
           showPage("index");
@@ -598,16 +693,40 @@ function codeBlocks() {
 
         // wait 2 seconds before applying markdown and building the nav
           applyMarkdown(page);
-          buildNav();
+          buildNav(page);
 
 
-        // add event listeners to all links with href="?page=..."
+        // add event listeners to all links with href="?page=..." (# optional, if it exists, scroll to the element with that id)
         document.querySelectorAll("a[href^='?page=']").forEach((a) => {
           a.addEventListener("click", (e) => {
             e.preventDefault();
-            const pageId = a.getAttribute("href").split("=")[1];
+            // check if the href has a #, if it does, scroll to the element with that id
+            let pageId = a.getAttribute("href").split("?page=")[1];
+            let hash = null;
+            if (pageId.includes("#")) {
+              hash = pageId.split("#")[1];
+              pageId = pageId.split("#")[0];
+              console.log('hash', hash);
+              updateUrl(pageId, hash);
+            } else {
+              console.log('no hash');
+              updateUrl(pageId);
+            }
+
+            console.log('pageId', pageId);
             showPage(pageId);
-            updateUrl(pageId);
+            
+
+            // scroll to the element with the id
+            if (hash) {
+              const element = document.querySelector(`#${hash}`);
+              if (element) {
+                element.scrollIntoView({ behavior: "smooth" });
+              }
+            } else {
+              // scroll to the top of the page, smooth scroll
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }
           });
         });
 
