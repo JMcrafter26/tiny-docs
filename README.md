@@ -4,7 +4,7 @@
 ## What is Tiny Docs
 Tiny Docs is a simple and lightweight (single file!) documentation template that allows you to write documentation in markdown and have it rendered as a static site
 
-## Feature
+## Features
 
 - 📄 **Single file** - Just one HTML file!
 - 📝 **Markdown** - Write documentation in [markdown](?page=snarkdown)
@@ -13,7 +13,7 @@ Tiny Docs is a simple and lightweight (single file!) documentation template that
 - 📱 **Responsive** - Works on all devices
 - 🚀 **Fast** - Loads _extremely_ fast
 
-## Use case
+## Use cases
 
 - Personal documentation
 - Project documentation
@@ -32,10 +32,10 @@ I made this because I wanted a simple way to write documentation and have it in 
 1. Open the file in your text editor
 1. Write and customize your documentatio
 
-## Planned feature
+## Planned features
 
 - [ ] 🔎 Search
-- [ ] 📖 Table of contents
+- [x] 📖 Table of contents
 - [ ] 🌐 Full Offline support
 - [ ] 🛠️ Import from GitHub Wiki
 - [ ] 📝 (Web) Builder
