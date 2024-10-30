@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <script>window.startTimer = Date.now();</script>
+    <style>
+:root{--background-body:#fff;--background:#efefef;--background-alt:#f7f7f7;--selection:#9e9e9e;--text-main:#363636;--text-bright:#000;--text-muted:#70777f;--links:#0076d1;--focus:rgba(0,150,191,0.67);--border:#dbdbdb;--code:#000;--animation-duration:0.1s;--button-base:#d0cfcf;--button-hover:#9b9b9b;--scrollbar-thumb:#aaa;--scrollbar-thumb-hover:var(--button-hover);--form-placeholder:#949494;--form-text:#1d1d1d;--variable:#39a33c;--highlight:#ff0;--select-arrow:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='63' width='117' fill='%23161f27'%3E%3Cpath d='M115 2c-1-2-4-2-5 0L59 53 7 2a4 4 0 00-5 5l54 54 2 2 3-2 54-54c2-1 2-4 0-5z'/%3E%3C/svg%3E")}@media (prefers-color-scheme:dark){:root{--background-body:#202b38;--background:#161f27;--background-alt:#1a242f;--selection:#1c76c5;--text-main:#dbdbdb;--text-bright:#fff;--text-muted:#a9b1ba;--links:#41adff;--focus:rgba(0,150,191,0.67);--border:#526980;--code:#ffbe85;--animation-duration:0.1s;--button-base:#0c151c;--button-hover:#040a0f;--scrollbar-thumb:var(--button-hover);--scrollbar-thumb-hover:#000;--form-placeholder:#a9a9a9;--form-text:#fff;--variable:#d941e2;--highlight:#efdb43;--select-arrow:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='63' width='117' fill='%23efefef'%3E%3Cpath d='M115 2c-1-2-4-2-5 0L59 53 7 2a4 4 0 00-5 5l54 54 2 2 3-2 54-54c2-1 2-4 0-5z'/%3E%3C/svg%3E")}}html{scrollbar-color:#aaa #fff;scrollbar-color:var(--scrollbar-thumb) var(--background-body);scrollbar-width:thin}@media (prefers-color-scheme:dark){html{scrollbar-color:#040a0f #202b38;scrollbar-color:var(--scrollbar-thumb) var(--background-body)}}body{font-family:system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,Segoe UI Emoji,Apple Color Emoji,Noto Color Emoji,sans-serif;line-height:1.4;max-width:800px;margin:20px auto;padding:0 10px;word-wrap:break-word;color:#363636;color:var(--text-main);background:#fff;background:var(--background-body);text-rendering:optimizeLegibility}@media (prefers-color-scheme:dark){body{background:#202b38;background:var(--background-body);color:#dbdbdb;color:var(--text-main)}}button{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}@media (prefers-color-scheme:dark){button{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}}input{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}@media (prefers-color-scheme:dark){input{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}}textarea{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}@media (prefers-color-scheme:dark){textarea{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}}h1{font-size:2.2em;margin-top:0}h1,h2,h3,h4,h5,h6{margin-bottom:12px;margin-top:24px}h1{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h1{color:#fff;color:var(--text-bright)}}h2{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h2{color:#fff;color:var(--text-bright)}}h3{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h3{color:#fff;color:var(--text-bright)}}h4{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h4{color:#fff;color:var(--text-bright)}}h5{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h5{color:#fff;color:var(--text-bright)}}h6{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h6{color:#fff;color:var(--text-bright)}}strong{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){strong{color:#fff;color:var(--text-bright)}}b,h1,h2,h3,h4,h5,h6,strong,th{font-weight:600}q:after,q:before{content:none}blockquote{border-left:4px solid rgba(0,150,191,.67);border-left:4px solid var(--focus);margin:1.5em 0;padding:.5em 1em;font-style:italic}@media (prefers-color-scheme:dark){blockquote{border-left:4px solid rgba(0,150,191,.67);border-left:4px solid var(--focus)}}q{border-left:4px solid rgba(0,150,191,.67);border-left:4px solid var(--focus);margin:1.5em 0;padding:.5em 1em;font-style:italic}@media (prefers-color-scheme:dark){q{border-left:4px solid rgba(0,150,191,.67);border-left:4px solid var(--focus)}}blockquote>footer{font-style:normal;border:0}address,blockquote cite{font-style:normal}a[href^=mailto\:]:before{content:"📧 "}a[href^=tel\:]:before{content:"📞 "}a[href^=sms\:]:before{content:"💬 "}mark{background-color:#ff0;background-color:var(--highlight);border-radius:2px;padding:0 2px;color:#000}@media (prefers-color-scheme:dark){mark{background-color:#efdb43;background-color:var(--highlight)}}a>code,a>strong{color:inherit}button,input[type=button],input[type=checkbox],input[type=radio],input[type=range],input[type=reset],input[type=submit],select{cursor:pointer}input,select{display:block}[type=checkbox],[type=radio]{display:initial}input{color:#1d1d1d;color:var(--form-text);background-color:#efefef;background-color:var(--background);font-family:inherit;font-size:inherit;margin-right:6px;margin-bottom:6px;padding:10px;border:none;border-radius:6px;outline:none}@media (prefers-color-scheme:dark){input{background-color:#161f27;background-color:var(--background);color:#fff;color:var(--form-text)}}button{color:#1d1d1d;color:var(--form-text);background-color:#efefef;background-color:var(--background);font-family:inherit;font-size:inherit;margin-right:6px;margin-bottom:6px;padding:10px;border:none;border-radius:6px;outline:none}@media (prefers-color-scheme:dark){button{background-color:#161f27;background-color:var(--background);color:#fff;color:var(--form-text)}}textarea{color:#1d1d1d;color:var(--form-text);background-color:#efefef;background-color:var(--background);font-family:inherit;font-size:inherit;margin-right:6px;margin-bottom:6px;padding:10px;border:none;border-radius:6px;outline:none}@media (prefers-color-scheme:dark){textarea{background-color:#161f27;background-color:var(--background);color:#fff;color:var(--form-text)}}select{color:#1d1d1d;color:var(--form-text);background-color:#efefef;background-color:var(--background);font-family:inherit;font-size:inherit;margin-right:6px;margin-bottom:6px;padding:10px;border:none;border-radius:6px;outline:none}@media (prefers-color-scheme:dark){select{background-color:#161f27;background-color:var(--background);color:#fff;color:var(--form-text)}}button{background-color:#d0cfcf;background-color:var(--button-base);padding-right:30px;padding-left:30px}@media (prefers-color-scheme:dark){button{background-color:#0c151c;background-color:var(--button-base)}}input[type=submit]{background-color:#d0cfcf;background-color:var(--button-base);padding-right:30px;padding-left:30px}@media (prefers-color-scheme:dark){input[type=submit]{background-color:#0c151c;background-color:var(--button-base)}}input[type=reset]{background-color:#d0cfcf;background-color:var(--button-base);padding-right:30px;padding-left:30px}@media (prefers-color-scheme:dark){input[type=reset]{background-color:#0c151c;background-color:var(--button-base)}}input[type=button]{background-color:#d0cfcf;background-color:var(--button-base);padding-right:30px;padding-left:30px}@media (prefers-color-scheme:dark){input[type=button]{background-color:#0c151c;background-color:var(--button-base)}}button:hover{background:#9b9b9b;background:var(--button-hover)}@media (prefers-color-scheme:dark){button:hover{background:#040a0f;background:var(--button-hover)}}input[type=submit]:hover{background:#9b9b9b;background:var(--button-hover)}@media (prefers-color-scheme:dark){input[type=submit]:hover{background:#040a0f;background:var(--button-hover)}}input[type=reset]:hover{background:#9b9b9b;background:var(--button-hover)}@media (prefers-color-scheme:dark){input[type=reset]:hover{background:#040a0f;background:var(--button-hover)}}input[type=button]:hover{background:#9b9b9b;background:var(--button-hover)}@media (prefers-color-scheme:dark){input[type=button]:hover{background:#040a0f;background:var(--button-hover)}}input[type=color]{min-height:2rem;padding:8px;cursor:pointer}input[type=checkbox],input[type=radio]{height:1em;width:1em}input[type=radio]{border-radius:100%}input{vertical-align:top}label{vertical-align:middle;margin-bottom:4px;display:inline-block}button,input:not([type=checkbox]):not([type=radio]),input[type=range],select,textarea{-webkit-appearance:none}textarea{display:block;margin-right:0;box-sizing:border-box;resize:vertical}textarea:not([cols]){width:100%}textarea:not([rows]){min-height:40px;height:140px}select{background:#efefef url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='63' width='117' fill='%23161f27'%3E%3Cpath d='M115 2c-1-2-4-2-5 0L59 53 7 2a4 4 0 00-5 5l54 54 2 2 3-2 54-54c2-1 2-4 0-5z'/%3E%3C/svg%3E") calc(100% - 12px) 50%/12px no-repeat;background:var(--background) var(--select-arrow) calc(100% - 12px) 50%/12px no-repeat;padding-right:35px}@media (prefers-color-scheme:dark){select{background:#161f27 url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='63' width='117' fill='%23efefef'%3E%3Cpath d='M115 2c-1-2-4-2-5 0L59 53 7 2a4 4 0 00-5 5l54 54 2 2 3-2 54-54c2-1 2-4 0-5z'/%3E%3C/svg%3E") calc(100% - 12px) 50%/12px no-repeat;background:var(--background) var(--select-arrow) calc(100% - 12px) 50%/12px no-repeat}}select::-ms-expand{display:none}select[multiple]{padding-right:10px;background-image:none;overflow-y:auto}input:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}@media (prefers-color-scheme:dark){input:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}}select:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}@media (prefers-color-scheme:dark){select:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}}button:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}@media (prefers-color-scheme:dark){button:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}}textarea:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}@media (prefers-color-scheme:dark){textarea:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}}button:active,input[type=button]:active,input[type=checkbox]:active,input[type=radio]:active,input[type=range]:active,input[type=reset]:active,input[type=submit]:active{transform:translateY(2px)}button:disabled,input:disabled,select:disabled,textarea:disabled{cursor:not-allowed;opacity:.5}::-moz-placeholder{color:#949494;color:var(--form-placeholder)}:-ms-input-placeholder{color:#949494;color:var(--form-placeholder)}::-ms-input-placeholder{color:#949494;color:var(--form-placeholder)}::placeholder{color:#949494;color:var(--form-placeholder)}@media (prefers-color-scheme:dark){::-moz-placeholder{color:#a9a9a9;color:var(--form-placeholder)}:-ms-input-placeholder{color:#a9a9a9;color:var(--form-placeholder)}::-ms-input-placeholder{color:#a9a9a9;color:var(--form-placeholder)}::placeholder{color:#a9a9a9;color:var(--form-placeholder)}}fieldset{border:1px solid rgba(0,150,191,.67);border:1px solid var(--focus);border-radius:6px;margin:0 0 12px;padding:10px}@media (prefers-color-scheme:dark){fieldset{border:1px solid rgba(0,150,191,.67);border:1px solid var(--focus)}}legend{font-size:.9em;font-weight:600}input[type=range]{margin:10px 0;padding:10px 0;background:transparent}input[type=range]:focus{outline:none}input[type=range]::-webkit-slider-runnable-track{width:100%;height:9.5px;-webkit-transition:.2s;transition:.2s;background:#efefef;background:var(--background);border-radius:3px}@media (prefers-color-scheme:dark){input[type=range]::-webkit-slider-runnable-track{background:#161f27;background:var(--background)}}input[type=range]::-webkit-slider-thumb{box-shadow:0 1px 1px #000,0 0 1px #0d0d0d;height:20px;width:20px;border-radius:50%;background:#dbdbdb;background:var(--border);-webkit-appearance:none;margin-top:-7px}@media (prefers-color-scheme:dark){input[type=range]::-webkit-slider-thumb{background:#526980;background:var(--border)}}input[type=range]:focus::-webkit-slider-runnable-track{background:#efefef;background:var(--background)}@media (prefers-color-scheme:dark){input[type=range]:focus::-webkit-slider-runnable-track{background:#161f27;background:var(--background)}}input[type=range]::-moz-range-track{width:100%;height:9.5px;-moz-transition:.2s;transition:.2s;background:#efefef;background:var(--background);border-radius:3px}@media (prefers-color-scheme:dark){input[type=range]::-moz-range-track{background:#161f27;background:var(--background)}}input[type=range]::-moz-range-thumb{box-shadow:1px 1px 1px #000,0 0 1px #0d0d0d;height:20px;width:20px;border-radius:50%;background:#dbdbdb;background:var(--border)}@media (prefers-color-scheme:dark){input[type=range]::-moz-range-thumb{background:#526980;background:var(--border)}}input[type=range]::-ms-track{width:100%;height:9.5px;background:transparent;border-color:transparent;border-width:16px 0;color:transparent}input[type=range]::-ms-fill-lower{background:#efefef;background:var(--background);border:.2px solid #010101;border-radius:3px;box-shadow:1px 1px 1px #000,0 0 1px #0d0d0d}@media (prefers-color-scheme:dark){input[type=range]::-ms-fill-lower{background:#161f27;background:var(--background)}}input[type=range]::-ms-fill-upper{background:#efefef;background:var(--background);border:.2px solid #010101;border-radius:3px;box-shadow:1px 1px 1px #000,0 0 1px #0d0d0d}@media (prefers-color-scheme:dark){input[type=range]::-ms-fill-upper{background:#161f27;background:var(--background)}}input[type=range]::-ms-thumb{box-shadow:1px 1px 1px #000,0 0 1px #0d0d0d;border:1px solid #000;height:20px;width:20px;border-radius:50%;background:#dbdbdb;background:var(--border)}@media (prefers-color-scheme:dark){input[type=range]::-ms-thumb{background:#526980;background:var(--border)}}input[type=range]:focus::-ms-fill-lower{background:#efefef;background:var(--background)}@media (prefers-color-scheme:dark){input[type=range]:focus::-ms-fill-lower{background:#161f27;background:var(--background)}}input[type=range]:focus::-ms-fill-upper{background:#efefef;background:var(--background)}@media (prefers-color-scheme:dark){input[type=range]:focus::-ms-fill-upper{background:#161f27;background:var(--background)}}a{text-decoration:none;color:#0076d1;color:var(--links)}@media (prefers-color-scheme:dark){a{color:#41adff;color:var(--links)}}a:hover{text-decoration:underline}code{background:#efefef;background:var(--background);color:#000;color:var(--code);padding:2.5px 5px;border-radius:6px;font-size:1em}@media (prefers-color-scheme:dark){code{color:#ffbe85;color:var(--code);background:#161f27;background:var(--background)}}samp{background:#efefef;background:var(--background);color:#000;color:var(--code);padding:2.5px 5px;border-radius:6px;font-size:1em}@media (prefers-color-scheme:dark){samp{color:#ffbe85;color:var(--code);background:#161f27;background:var(--background)}}time{background:#efefef;background:var(--background);color:#000;color:var(--code);padding:2.5px 5px;border-radius:6px;font-size:1em}@media (prefers-color-scheme:dark){time{color:#ffbe85;color:var(--code);background:#161f27;background:var(--background)}}pre>code{padding:10px;display:block;overflow-x:auto}var{color:#39a33c;color:var(--variable);font-style:normal;font-family:monospace}@media (prefers-color-scheme:dark){var{color:#d941e2;color:var(--variable)}}kbd{background:#efefef;background:var(--background);border:1px solid #dbdbdb;border:1px solid var(--border);border-radius:2px;color:#363636;color:var(--text-main);padding:2px 4px}@media (prefers-color-scheme:dark){kbd{color:#dbdbdb;color:var(--text-main);border:1px solid #526980;border:1px solid var(--border);background:#161f27;background:var(--background)}}img,video{max-width:100%;height:auto}hr{border:none;border-top:1px solid #dbdbdb;border-top:1px solid var(--border)}@media (prefers-color-scheme:dark){hr{border-top:1px solid #526980;border-top:1px solid var(--border)}}table{border-collapse:collapse;margin-bottom:10px;width:100%;table-layout:fixed}table caption,td,th{text-align:left}td,th{padding:6px;vertical-align:top;word-wrap:break-word}thead{border-bottom:1px solid #dbdbdb;border-bottom:1px solid var(--border)}@media (prefers-color-scheme:dark){thead{border-bottom:1px solid #526980;border-bottom:1px solid var(--border)}}tfoot{border-top:1px solid #dbdbdb;border-top:1px solid var(--border)}@media (prefers-color-scheme:dark){tfoot{border-top:1px solid #526980;border-top:1px solid var(--border)}}tbody tr:nth-child(2n){background-color:#efefef;background-color:var(--background)}@media (prefers-color-scheme:dark){tbody tr:nth-child(2n){background-color:#161f27;background-color:var(--background)}}tbody tr:nth-child(2n) button{background-color:#f7f7f7;background-color:var(--background-alt)}@media (prefers-color-scheme:dark){tbody tr:nth-child(2n) button{background-color:#1a242f;background-color:var(--background-alt)}}tbody tr:nth-child(2n) button:hover{background-color:#fff;background-color:var(--background-body)}@media (prefers-color-scheme:dark){tbody tr:nth-child(2n) button:hover{background-color:#202b38;background-color:var(--background-body)}}::-webkit-scrollbar{height:10px;width:10px}::-webkit-scrollbar-track{background:#efefef;background:var(--background);border-radius:6px}@media (prefers-color-scheme:dark){::-webkit-scrollbar-track{background:#161f27;background:var(--background)}}::-webkit-scrollbar-thumb{background:#aaa;background:var(--scrollbar-thumb);border-radius:6px}@media (prefers-color-scheme:dark){::-webkit-scrollbar-thumb{background:#040a0f;background:var(--scrollbar-thumb)}}::-webkit-scrollbar-thumb:hover{background:#9b9b9b;background:var(--scrollbar-thumb-hover)}@media (prefers-color-scheme:dark){::-webkit-scrollbar-thumb:hover{background:#000;background:var(--scrollbar-thumb-hover)}}::-moz-selection{background-color:#9e9e9e;background-color:var(--selection);color:#000;color:var(--text-bright)}::selection{background-color:#9e9e9e;background-color:var(--selection);color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){::-moz-selection{color:#fff;color:var(--text-bright)}::selection{color:#fff;color:var(--text-bright)}}@media (prefers-color-scheme:dark){::-moz-selection{background-color:#1c76c5;background-color:var(--selection)}::selection{background-color:#1c76c5;background-color:var(--selection)}}details{display:flex;flex-direction:column;align-items:flex-start;background-color:#f7f7f7;background-color:var(--background-alt);padding:10px 10px 0;margin:1em 0;border-radius:6px;overflow:hidden}@media (prefers-color-scheme:dark){details{background-color:#1a242f;background-color:var(--background-alt)}}details[open]{padding:10px}details>:last-child{margin-bottom:0}details[open] summary{margin-bottom:10px}summary{display:list-item;background-color:#efefef;background-color:var(--background);padding:10px;margin:-10px -10px 0;cursor:pointer;outline:none}@media (prefers-color-scheme:dark){summary{background-color:#161f27;background-color:var(--background)}}summary:focus,summary:hover{text-decoration:underline}details>:not(summary){margin-top:0}summary::-webkit-details-marker{color:#363636;color:var(--text-main)}@media (prefers-color-scheme:dark){summary::-webkit-details-marker{color:#dbdbdb;color:var(--text-main)}}dialog{background-color:#f7f7f7;background-color:var(--background-alt);color:#363636;color:var(--text-main);border-radius:6px;border:#dbdbdb;border-color:var(--border);padding:10px 30px}@media (prefers-color-scheme:dark){dialog{border-color:#526980;border-color:var(--border);color:#dbdbdb;color:var(--text-main);background-color:#1a242f;background-color:var(--background-alt)}}dialog>header:first-child{background-color:#efefef;background-color:var(--background);border-radius:6px 6px 0 0;margin:-10px -30px 10px;padding:10px;text-align:center}@media (prefers-color-scheme:dark){dialog>header:first-child{background-color:#161f27;background-color:var(--background)}}dialog::-webkit-backdrop{background:rgba(0,0,0,.61);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}dialog::backdrop{background:rgba(0,0,0,.61);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}footer{border-top:1px solid #dbdbdb;border-top:1px solid var(--border);padding-top:10px;color:#70777f;color:var(--text-muted)}@media (prefers-color-scheme:dark){footer{color:#a9b1ba;color:var(--text-muted);border-top:1px solid #526980;border-top:1px solid var(--border)}}body>footer{margin-top:40px}@media print{body,button,code,details,input,pre,summary,textarea{background-color:#fff}button,input,textarea{border:1px solid #000}body,button,code,footer,h1,h2,h3,h4,h5,h6,input,pre,strong,summary,textarea{color:#000}summary::marker{color:#000}summary::-webkit-details-marker{color:#000}tbody tr:nth-child(2n){background-color:#f2f2f2}a{color:#00f;text-decoration:underline}}
+      </style>
+    <style>
+      page {
+        display: none;
+      }
+
+      body {
+        max-width: 1200px;
+      }
+
+      nav {
+        margin: 0;
+        padding: 0;
+        width: 250px;
+        position: fixed;
+        height: 95vh;
+        overflow: auto; 
+        background-color: var(--background-alt);
+        border-radius: 10px;
+        transition: all 0.3s ease;
+      }
+
+      /* Sidebar links */
+      nav .page .pageTitle {
+        display: block;
+        padding: 5px 0px 0px 16px;
+        text-decoration: none;
+        font-size: 17px;
+      }
+
+      nav .page .pageHeading {
+        display: block;
+        padding: 2px 16px;
+        margin-left: 10px;
+        text-decoration: none;
+        font-size: 15px;
+      }
+
+      /* Active/current link */
+      nav a.active {
+        font-weight: bold;
+      }
+
+      nav .page.activeBg {
+        background-color: var(--background);
+        border-radius: 5px;
+      }
+
+      /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
+      div.content {
+        margin-left: 250px;
+        margin-bottom: 20px;
+        padding: 1px 16px;
+        /* height: 1000px; */
+      }
+
+      .openBtn {
+        display: none;
+        position: fixed;
+        top: 20px;
+        left: 0px;
+        cursor: pointer;
+        background-color: var(--background-alt);
+        border: none;
+        color: var(--text);
+        /* border-radius: 5px; */
+        border-radius: 0 7px 7px 0;
+        padding: 5px 0px;
+
+        transition: transform 0.3s ease;
+      }
+
+      .openBtn span svg {
+        margin-top: 2px;
+        margin-bottom: -2px;
+        transition: transform 0.3s ease;
+      }
+
+      @media screen and (max-width: 700px) {
+        nav {
+          transform: translateX(-100%);
+          margin-left: -10px;
+          transition: transform 0.3s ease;
+        }
+
+        nav.active {
+          transform: translateX(0);
+          margin-left: 0;
+          transition: transform 0.3s ease;
+          border-radius: 10px 0 10px 10px;
+        }
+
+        div.content {
+          margin-left: 10px;
+          transition: margin-left 0.3s ease;
+        }
+
+        div.content.active {
+          margin-left: 270px;
+          transition: margin-left 0.3s ease;
+        }
+
+        .openBtn {
+          display: block;          
+        }
+
+        .openBtn.active {
+          transform: translateX(260px);
+          transition: transform 0.3s ease;
+        }
+
+        .openBtn.active span svg {
+          /* transform, mirror the svg by scaling it by -1 */
+          transform: scaleX(-1);
+          transition: transform 0.3s ease;
+        }
+      }
+
+      /* on mobile */
+      @media screen and (max-width: 500px) {
+        div.content.active {
+          margin-left: 10px;
+        }
+      }
+
+
+      #navTitle {
+        font-size: 20px;
+        font-weight: bold;
+        padding: 16px;
+        text-decoration: none;
+        display: block;
+        text-align: center;
+        color: var(--text);
+      }
+
+
+        .skeleton {
+            /* Skeleton loader */
+            background: linear-gradient(90deg, var(--links) 25%, var(--focus) 50%, var(--links) 75%);
+            background-size: 200% 100%;
+            animation: pulse 1s infinite;
+            border-radius: 5px;
+            color: transparent;
+            display: inline-block;
+            line-height: 1;
+            width: 100%;
+        }
+
+        @keyframes pulse {
+            0% {
+                background-position: 200% 0;
+            }
+        }
+
+        noscript {
+            background: red;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+
+            /* center the noscript element */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            z-index: 1000;
+        }
+
+        .navFooter {
+            text-align: center;
+            margin-top: 20px;
+            cursor: pointer;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          padding: 10px;
+          text-align: center;
+          font-size: 12px;
+          color: var(--text);
+
+          /* no warp */
+          white-space: nowrap;
+
+          opacity: 0.4;
+        }
+
+        .navFooter:hover {
+          opacity: 1;
+        }
+
+        .navFooter a {
+          display: inline-block;
+          padding: 0;
+        }
+    
+        .navFooter svg {
+            transition: all .25s ease-in-out;
+            font-size: 12px;
+            height: 12px
+        }
+    
+        .navFooter:hover svg {
+            animation: electric .5s infinite;
+            animation-timing-function: ease-in-out
+        }
+    
+        .navFooter a {
+            transition: color .25s ease-in-out
+        }
+    
+        .navFooter:hover a {
+            color: #fedd48;
+            text-decoration: none
+        }
+    
+        @keyframes electric {
+            0% {
+                filter: url(#sharp-drop-shadow) drop-shadow(0 0 7px rgb(254, 221, 72, .7));
+                transform: rotate(0)
+            }
+    
+            25% {
+                filter: url(#sharp-drop-shadow) drop-shadow(0 0 10px #fedd48);
+                transform: rotate(2.5deg)
+            }
+    
+            50% {
+                filter: url(#sharp-drop-shadow) drop-shadow(0 0 12px #fedd48);
+                transform: rotate(5deg)
+            }
+    
+            75% {
+                filter: url(#sharp-drop-shadow) drop-shadow(0 0 15px #fedd48);
+                transform: rotate(2.5deg)
+            }
+    
+            100% {
+                filter: url(#sharp-drop-shadow) drop-shadow(0 0 16px rgb(254, 221, 72, .7));
+                transform: rotate(0)
+            }
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 0px;
+            font-size: 12px;
+        }
+
+    </style>
+
+
+  </head>
+  <body>
+    <noscript><h1>Oh no!</h1>
+      <p>This page requires JavaScript to work. Please enable JavaScript in your browser settings.</p>
+        <p><a target="_blank" href="https://www.enable-javascript.com/">How to enable JavaScript</a></p>
+    </noscript>
+
+    <button class="openBtn">
+      <span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>
+      </span>
+    </button>
+    <nav data-title="" data-credits="true">
+      <a href="?" id="navTitle"></a>
+      <!-- a navbar at the left side of the page, (collapsed on mobile -> expandable on click). Similar to justthedocs or mkdocs -->
+      <a href="?page=index">Home</a>
+
+    
+    </nav>
+
+    <div class="content">
+      <page data-pageId="index" data-title="Home">
+
+        # Tiny Docs
+
+        ## What is Tiny Docs
+        Tiny Docs is a simple and lightweight (single file!) documentation template that allows you to write documentation in markdown and have it rendered as a static site
+        
+        ## Feature
+        
+        - 📄 **Single file** - Just one HTML file!
+        - 📝 **Markdown** - Write documentation in [markdown](?page=snarkdown)
+        - 📦 **Zero dependencies** - No need for a build step or package manager. (Although there are tools to make it even smaller)
+        - 🎨 **Customizable** - Change the CSS to fit your style
+        - 📱 **Responsive** - Works on all devices
+        - 🚀 **Fast** - Loads _extremely_ fast
+        
+        ## Use case
+        
+        - Personal documentation
+        - Project documentation
+        - Software documentation
+        - _Anything_ that needs documentation
+        I made this because I wanted a simple way to write documentation and have it in a single file. I hope you find it useful! 
+        
+        ## How to us
+        
+        > This project is still in development. Some features may not work as expected
+        
+        1. Download the HTML file (or clone the repo)
+        1. Open the file in your text editor
+        1. Write and customize your documentatio
+        
+        ## Planned feature
+        
+        - [ ] 🔎 Search
+        - [ ] ~~📖 Table of contents~~ ✅
+        - [ ] 🌐 Full Offline support
+        - [ ] 🛠️ Import from GitHub Wiki
+        - [ ] 📝 (Web) Builder
+        - [ ] 📤 Export to PDF/Markdown/HTML
+        
+      </page>
+      <page data-pageId="snarkdown" data-title="Snarkdown">
+
+        # It's powered by Snarkdown!
+        [Snarkdown](https://github.com/developit/snarkdown) is a dead simple 1kb
+        markdown parser that converts markdown to HTML.
+
+        ## Example
+
+        ## Snarkdown
+
+![snarkdown](https://cdn.jsdelivr.net/emojione/assets/svg/1f63c.svg)
+
+*[Snarkdown](http://github.com/developit/snarkdown)* is __easy__ to `use`!
+
+Here's an [**important** anchor link](#example).
+
+Two newlines creates a line break.
+
+Or, end a line with two spaces.  
+Just like that!
+
+Code & Poetry
+-------------
+
+    You can also indent
+    blocks to display
+    code or poetry.
+    
+    Indented code/poetry blocks  
+    can be hard-wrapped.
+
+**Or, wrap your code in three backticks:**
+
+```JavaScript
+function codeBlocks() {
+    return 'Can be inserted';
+}
+```
+
+
+### Block Quotes
+
+> You can insert quotes by
+> preceeding each line with `>`.
+>
+> Blockquotes can also contain line  
+> breaks.
+
+
+## Lists
+
+- Unordered
+* Lists
++ Of mixed type
+
+1. Ordered
+2. Lists
+4. Numbers are ignored
+
+
+      </page>
+
+      <page data-pageId="about"> # About
+        This is the about page </page>
+      <page data-pageId="404">
+        # 404
+        
+        The page you are looking for does not exist
+
+        [Go back to the home page](?page=index)
+      </page>
+
+      <footer>
+        <p>&copy; 2024 JMcrafter26</p>
+      </footer>
+    </div>
+
+
+    <script id="snarkdown">
+    const TAGS = {
+	'': ['<em>','</em>'],
+	_: ['<strong>','</strong>'],
+	'*': ['<strong>','</strong>'],
+	'~': ['<s>','</s>'],
+	'\n': ['<br />'],
+	' ': ['<br />'],
+	'-': ['<hr />']
+};
+
+/** Outdent a string based on the first indented line's leading whitespace
+ *	@private
+ */
+function outdent(str) {
+	return str.replace(RegExp('^'+(str.match(/^(\t| )+/) || '')[0], 'gm'), '');
+}
+
+/** Encode special attribute characters to HTML entities in a String.
+ *	@private
+ */
+function encodeAttr(str) {
+	return (str+'').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+/** Parse Markdown into an HTML String. */
+function parse(md, prevLinks) {
+	let tokenizer = /((?:^|\n+)(?:\n---+|\* \*(?: \*)+)\n)|(?:^``` *(\w*)\n([\s\S]*?)\n```$)|((?:(?:^|\n+)(?:\t|  {2,}).+)+\n*)|((?:(?:^|\n)([>*+-]|\d+\.)\s+.*)+)|(?:!\[([^\]]*?)\]\(([^)]+?)\))|(\[)|(\](?:\(([^)]+?)\))?)|(?:(?:^|\n+)([^\s].*)\n(-{3,}|={3,})(?:\n+|$))|(?:(?:^|\n+)(#{1,6})\s*(.+)(?:\n+|$))|(?:`([^`].*?)`)|(  \n\n*|\n{2,}|__|\*\*|[_*]|~~)/gm,
+		context = [],
+		out = '',
+		links = prevLinks || {},
+		last = 0,
+		chunk, prev, token, inner, t;
+
+	function tag(token) {
+		let desc = TAGS[token[1] || ''];
+		let end = context[context.length-1] == token;
+		if (!desc) return token;
+		if (!desc[1]) return desc[0];
+		if (end) context.pop();
+		else context.push(token);
+		return desc[end|0];
+	}
+
+	function flush() {
+		let str = '';
+		while (context.length) str += tag(context[context.length-1]);
+		return str;
+	}
+
+	md = md.replace(/^\[(.+?)\]:\s*(.+)$/gm, (s, name, url) => {
+		links[name.toLowerCase()] = url;
+		return '';
+	}).replace(/^\n+|\n+$/g, '');
+
+	while ( (token=tokenizer.exec(md)) ) {
+		prev = md.substring(last, token.index);
+		last = tokenizer.lastIndex;
+		chunk = token[0];
+		if (prev.match(/[^\\](\\\\)*\\$/)) {
+			// escaped
+		}
+		// Code/Indent blocks:
+		else if (t = (token[3] || token[4])) {
+			chunk = '<pre class="code '+(token[4]?'poetry':token[2].toLowerCase())+'"><code'+(token[2] ? ` class="language-${token[2].toLowerCase()}"` : '')+'>'+outdent(encodeAttr(t).replace(/^\n+|\n+$/g, ''))+'</code></pre>';
+		}
+		// > Quotes, -* lists:
+		else if (t = token[6]) {
+			if (t.match(/\./)) {
+				token[5] = token[5].replace(/^\d+/gm, '');
+			}
+			inner = parse(outdent(token[5].replace(/^\s*[>*+.-]/gm, '')));
+			if (t=='>') t = 'blockquote';
+			else {
+				t = t.match(/\./) ? 'ol' : 'ul';
+				inner = inner.replace(/^(.*)(\n|$)/gm, '<li>$1</li>');
+			}
+			chunk = '<'+t+'>' + inner + '</'+t+'>';
+		}
+		// Images:
+		else if (token[8]) {
+			chunk = `<img src="${encodeAttr(token[8])}" alt="${encodeAttr(token[7])}">`;
+		}
+		// Links:
+		else if (token[10]) {
+			out = out.replace('<a>', `<a href="${encodeAttr(token[11] || links[prev.toLowerCase()])}">`);
+			chunk = flush() + '</a>';
+		}
+		else if (token[9]) {
+			chunk = '<a>';
+		}
+		// Headings:
+		else if (token[12] || token[14]) {
+			t = 'h' + (token[14] ? token[14].length : (token[13]>'=' ? 1 : 2));
+      console.log(token[12]);
+      chunk = '<'+t+' id="'+ parse(token[12] || token[15]).replaceAll(" ","-").toLowerCase() +'" data-anchor>' + parse(token[12] || token[15], links) + '</'+t+'>';
+		}
+		// `code`:
+		else if (token[16]) {
+			chunk = '<code>'+encodeAttr(token[16])+'</code>';
+		}
+		// Inline formatting: *em*, **strong** & friends
+		else if (token[17] || token[1]) {
+			chunk = tag(token[17] || '--');
+		} 
+		out += prev;
+		out += chunk;
+	}
+
+	return (out + md.substring(last) + flush()).replace(/^\n+|\n+$/g, '');
+}
+
+function snarkdown(md) {
+  return parse(md);
+}
+    </script>
+<!-- <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.10.0/build/highlight.min.js"></script> -->
+    <script>
+      function showPage(pageId) {
+        const pages = document.querySelectorAll("page");
+        // mass hide all pages
+        pages.forEach((page) => {
+          page.style.display = "none";
+          if (page.getAttribute("data-pageId") === pageId) {
+            page.style.display = "block";
+          }
+        });
+
+        // if the pageId does not exist, show the 404 page
+        if (!document.querySelector(`page[data-pageId="${pageId}"]`)) {
+          showPage("404");
+          return;
+        }
+        // show the page with the pageId
+        const page = document.querySelector(`page[data-pageId="${pageId}"]`);
+      }
+
+      function updateUrl(pageId, hash) {
+        let url = `?page=${pageId}`;
+        if (hash) {
+          url += `#${hash}`;
+        }
+        window.history.pushState({ pageId: pageId }, "", url);
+      }
+
+      function applyMarkdown(currentPage) {
+        const pages = document.querySelectorAll("page");
+        // use snarkdown to convert markdown to html
+        pages.forEach((page) => {
+            if (page.getAttribute("data-pageId") === currentPage) {
+                return;
+            }
+          let markdown = page.textContent;
+          // remove the indentation before the # to make it work, but do not remove line breaks
+          markdown = markdown.replace(/^ +/gm, "");
+
+          // console.log(markdown);
+          const html = snarkdown(markdown);
+          // console.log(html);
+          page.innerHTML = html;
+        });
+      }
+
+      function buildNav(currentPage) {
+        const nav = document.querySelector("nav");
+        const pages = document.querySelectorAll("page");
+        const navTitle = document.createElement("a");
+
+        // empty the nav
+        nav.innerHTML = "";
+
+        navTitle.href = "?";
+        // if document title is empty, use the first h1 element in the index page
+        if (!document.title) {
+          document.title = document.querySelector(
+            'page[data-pageId="index"] h1'
+          )?.textContent;
+        }
+        // if data-title is set in the nav div, use that as the title
+        if (nav.getAttribute("data-title")) {
+          navTitle.textContent = nav.getAttribute("data-title");
+        } else {
+          navTitle.textContent = document.title;
+        }
+        navTitle.id = "navTitle";
+        nav.insertBefore(navTitle, nav.firstChild);
+
+        pages.forEach((page) => {
+          const pageId = page.getAttribute("data-pageId");
+          let title;
+          // get the first h1 element in the page
+          // if page div has data-title, use that as the title
+          if (page.getAttribute("data-title")) {
+            title = page.getAttribute("data-title");
+          } else {
+            title = page.querySelector("h1")?.textContent;
+          }
+
+        // page id is 404, do not add to the nav
+            if (pageId === "404") {
+                return;
+            }
+
+          const pageDiv = document.createElement("div");
+          pageDiv.classList.add("page");
+
+
+          const pageTitle = document.createElement("a");
+          pageTitle.href = `?page=${pageId}`;
+          pageTitle.textContent = title;
+          pageTitle.classList.add("pageTitle");
+
+          pageDiv.appendChild(pageTitle);
+
+          // add the page heading to the nav
+          // search for all h tags in the page
+          let headings = page.querySelectorAll("h1, h2, h3, h4, h5, h6");
+          // remove the first h1 element
+          // headings = Array.from(headings).slice(1);
+          headings.forEach((heading) => {
+            const pageHeading = document.createElement("a");
+            pageHeading.href = `?page=${pageId}#${heading.getAttribute("id")}`;
+            pageHeading.textContent = heading.textContent;
+            // based on what h tag it is, change the left margin
+            pageHeading.style.marginLeft = `${((parseInt(heading.tagName[1]) - 1) * 20) + 10}px`;
+            pageHeading.classList.add("pageHeading");
+            pageDiv.appendChild(pageHeading);
+          });
+
+          console.log(pageDiv);
+
+          nav.appendChild(pageDiv);
+
+        });
+
+        const navFooter = document.createElement("div");
+        navFooter.classList.add("navFooter");
+        navFooter.innerHTML = `<hr><svg class="feather feather-zap" fill=none stroke=currentColor stroke-linecap=round stroke-linejoin=round
+            stroke-width=2 viewBox="0 0 24 24" xmlns=http://www.w3.org/2000/svg>
+            <defs>
+                <filter height=200% id=sharp-drop-shadow width=200% x=-50% y=-50%>
+                    <feGaussianBlur in=SourceAlpha stdDeviation=1 />
+                    <feOffset dx=0 dy=0 result=offsetblur />
+                    <feFlood flood-color=#fedd48 />
+                    <feComposite in2=offsetblur operator=in />
+                    <feMerge>
+                        <feMergeNode />
+                        <feMergeNode in=SourceGraphic />
+                    </feMerge>
+                </filter>
+            </defs>
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+        </svg> Powered by <a alt="upLoadly" href=https://github.com/JMcrafter26/tiny-docs target=_blank>Tiny Docs</a>
+    </div>`;
+        nav.appendChild(navFooter);
+
+
+      }
+
+      function prepareCurrentPage(pageId) {
+        console.log("Preparing " + pageId);
+        let index = document.querySelector('page[data-pageId="' + pageId + '"]');
+
+        // render the index page
+        index.textContent = index.textContent.replace(/^ +/gm, "");
+        index.innerHTML = snarkdown(index.textContent);
+        console.log(pageId + " prepared");
+      }
+
+      function updateNavActive(pageId, hash = null) {
+        if (hash) {
+          pageId += "#" + hash;
+        }
+        const navLinks = document.querySelectorAll("nav a");
+        navLinks.forEach((link) => {
+          if (link.getAttribute("href") === `?page=${pageId}`) {
+            navLinks.forEach((link) => {
+              link.classList.remove("active");
+              link.parentElement.classList.remove("activeBg");
+            });
+            link.classList.add("active");
+            // add activeBg class to the parent div
+            link.parentElement.classList.add("activeBg");
+          }
+        });
+
+      }
+
+      function init() {
+        // if ?page is in the URL, show that page
+        const urlParams = new URLSearchParams(window.location.search);
+        let page = urlParams.get("page");
+        if (page) {
+          // check if the page exists, if it does not, show the 404 page
+          if (!document.querySelector(`page[data-pageId="${page}"]`)) {
+            page = "404";
+          }
+          showPage(page);
+        } else {
+          showPage("index");
+          page = "index";
+        }
+
+        // add event listeners if url changes
+        window.addEventListener("popstate", () => {
+          const urlParams = new URLSearchParams(window.location.search);
+          const page = urlParams.get("page");
+          showPage(page);
+        });
+
+        prepareCurrentPage(page);
+
+        // wait 2 seconds before applying markdown and building the nav
+          applyMarkdown(page);
+          buildNav(page);
+          updateNavActive(page + window.location.hash);
+
+
+        // add event listeners to all links with href="?page=..." (# optional, if it exists, scroll to the element with that id)
+        document.querySelectorAll("a[href^='?page=']").forEach((a) => {
+          a.addEventListener("click", (e) => {
+            e.preventDefault();
+            // check if the href has a #, if it does, scroll to the element with that id
+            let pageId = a.getAttribute("href").split("?page=")[1];
+            let hash = null;
+            if (pageId.includes("#")) {
+              hash = pageId.split("#")[1];
+              pageId = pageId.split("#")[0];
+              console.log('hash', hash);
+              updateUrl(pageId, hash);
+            } else {
+              console.log('no hash');
+              updateUrl(pageId);
+            }
+
+            console.log('pageId', pageId);
+            showPage(pageId);
+            updateNavActive(pageId, hash);
+            
+
+            // scroll to the element with the id
+            if (hash) {
+              const element = document.querySelector(`#${hash}`);
+              if (element) {
+                window.userScrolling = true;
+                element.scrollIntoView({ behavior: "smooth" });
+                setTimeout(() => {
+                  window.userScrolling = false;
+                }, 1000);
+              }
+            } else {
+              // scroll to the top of the page, smooth scroll
+              window.userScrolling = true;
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              setTimeout(() => {
+                window.userScrolling = false;
+              }, 1000);
+            }
+          });
+        });
+
+        // add event listener to the open button, animate the nav sliding in from the left
+        const openBtn = document.querySelector(".openBtn");
+        // toggle active class on the nav
+        openBtn.addEventListener("click", () => {
+          document.querySelector("nav").classList.toggle("active");
+          openBtn.classList.toggle("active");
+          document.querySelector(".content").classList.toggle("active");
+        });
+
+        window.userScrolling = true;
+
+        // add scroll event listener to update the active nav link based on the scroll position
+        // the h tag that is visible and closest to the top of the page is the active link
+        // or if scrolled to the bottom of the page, the last link is active
+        window.addEventListener("scroll", () => {
+          if (window.userScrolling === true) {
+            return;
+          }
+
+          // get current page from url
+          const urlParams = new URLSearchParams(window.location.search);
+          const pageId = urlParams.get("page");
+
+          
+          const currentPages = document.querySelectorAll("page[data-pageId='" + pageId + "']");
+          if (currentPages.length === 0) {
+            return;
+          }
+          const current = currentPages[0];
+          const headings = current.querySelectorAll("[data-anchor]");
+
+
+
+
+
+          let activeHeading = null;
+          // if scrolled to the bottom of the page, set the last link as active
+          if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+            activeHeading = headings[headings.length - 1];
+          } else {
+            headings.forEach((heading) => {
+              if (
+                heading.getBoundingClientRect().top > 0 &&
+                heading.getBoundingClientRect().top < 200
+              ) {
+                activeHeading = heading;
+                // break out of the loop
+                return;
+              }
+            });
+          }
+
+          if (activeHeading) {
+            const pageId = activeHeading.closest("page").getAttribute("data-pageId");
+            const hash = activeHeading.getAttribute("id");
+            updateNavActive(pageId, hash);
+            updateUrl(pageId, hash);
+            console.log("active heading", activeHeading);
+          }
+        });
+
+
+        setTimeout(() => {
+          window.userScrolling = false;
+        }, 1000);
+        const endTime = Date.now();
+        console.log("Load and render time: ", endTime - window.startTimer + "ms");
+
+
+      }
+
+    // on Dom finish loading, call init
+    document.addEventListener("DOMContentLoaded", init);
+    </script>
+  </body>
+</html>
