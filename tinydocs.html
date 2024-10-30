@@ -273,42 +273,39 @@
       <page data-pageId="index" data-title="Home">
 
         # Tiny Docs
+
+        ## What is Tiny Docs
+        Tiny Docs is a simple and lightweight (single file!) documentation template that allows you to write documentation in markdown and have it rendered as a static site
         
-        ## What is Tiny Docs?
-
-        Tiny Docs is a simple and lightweight (single file!) documentation template that allows you to write documentation in markdown and have it rendered as a static site.
-
-        ## Features
-
+        ## Feature
+        
         - 📄 **Single file** - Just one HTML file!
         - 📝 **Markdown** - Write documentation in [markdown](?page=snarkdown)
         - 📦 **Zero dependencies** - No need for a build step or package manager. (Although there are tools to make it even smaller)
         - 🎨 **Customizable** - Change the CSS to fit your style
         - 📱 **Responsive** - Works on all devices
         - 🚀 **Fast** - Loads _extremely_ fast
-        - 🌙 **Dark mode** - Toggle between light and dark mode
-        - 🎉 **Open source** - [Fork on GitHub](https://github.com/JMcrafter26/tiny-docs)
-
-        ## Use cases
-
+        
+        ## Use case
+        
         - Personal documentation
         - Project documentation
         - Software documentation
-        - _Anything_ that needs documentation!
-
-        I made this because I wanted a simple way to write documentation and have it in a single file. I hope you find it useful! ⭐
-
-        ## How to use
-
+        - _Anything_ that needs documentation
+        I made this because I wanted a simple way to write documentation and have it in a single file. I hope you find it useful! 
+        
+        ## How to us
+        
+        > This project is still in development. Some features may not work as expected
         1. Download the HTML file (or clone the repo)
         1. Open the file in your text editor
-        1. Write and customize your documentation
-
-        ## Planned features
-
+        1. Write and customize your documentatio
+        
+        ## Planned feature
+        
         - [ ] 🔎 Search
-        - [x] 📖 Table of contents
-        - [ ] 🌐 Offline support
+        - [ ] 📖 Table of contents
+        - [ ] 🌐 Full Offline support
         - [ ] 🛠️ Import from GitHub Wiki
         - [ ] 📝 (Web) Builder
         - [ ] 📤 Export to PDF/Markdown/HTML
@@ -383,7 +380,7 @@ function codeBlocks() {
       </page>
 
       <footer>
-        <p>&copy; 2024 Your Company</p>
+        <p>&copy; 2024 JMcrafter26</p>
       </footer>
     </div>
 
@@ -483,13 +480,7 @@ function parse(md, prevLinks) {
 		else if (token[12] || token[14]) {
 			t = 'h' + (token[14] ? token[14].length : (token[13]>'=' ? 1 : 2));
       console.log(token[12]);
-      let anchor;
-      if (token[12]) {
-        anchor = token[12].toLowerCase().replace(/[^a-z0-9]/g, '-');
-      } else {
-        anchor = token[15].toLowerCase().replace(/[^a-z0-9]/g, '-');
-      }
-      chunk = '<'+t+' id="'+anchor+'" data-anchor>'+parse(token[12] || token[15], links)+'</'+t+'>';
+      chunk = '<'+t+' id="'+ parse(token[12] || token[15]).replaceAll(" ","-").toLowerCase() +'" data-anchor>' + parse(token[12] || token[15], links) + '</'+t+'>';
 		}
 		// `code`:
 		else if (token[16]) {
@@ -498,7 +489,7 @@ function parse(md, prevLinks) {
 		// Inline formatting: *em*, **strong** & friends
 		else if (token[17] || token[1]) {
 			chunk = tag(token[17] || '--');
-		}
+		} 
 		out += prev;
 		out += chunk;
 	}
