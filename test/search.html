@@ -11,7 +11,7 @@
         /* searchdiv like spotlight */
 .searchContainer {
     position: fixed;
-    top: 40%;
+    top: 20%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: var(--background-alt);
@@ -73,10 +73,14 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     height: auto;
     transition: all 0.2s;
+
 }
 
 .searchResults ul {
     list-style: none;
+    /* make it scrollable */
+    max-height: 50vh;
+    overflow-y: auto;
 }
 
 .searchResults ul li {
