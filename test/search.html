@@ -554,7 +554,7 @@ return parse(md);
                     const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                     innerHTML = innerHTML.replace(
                         new RegExp(escapedTerm, 'gi'),
-                        match => `<mark style="background-color: var(--accent); color: var(--text); padding: 0 2px; border-radius: 2px;">${match}</mark>`
+                        match => `<mark style="background-color: var(--highlight); color: var(--button-base); padding: 0 2px; border-radius: 2px;">${match}</mark>`
                     );
                 }
             });
