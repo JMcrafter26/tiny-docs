@@ -1,7 +1,7 @@
 // Choose a cache name
-const cacheName = 'cache-v1.0.2';
+const cacheName = 'cache-v1.0.3';
 // List the files to precache
-const precacheResources = ['./index.html'];
+const precacheResources = ['./tinydocs-local.html'];
 
 // When the service worker is installing, open the cache and add the precache resources to it
 self.addEventListener('install', (event) => {
