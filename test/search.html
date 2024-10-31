@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+</head>
+<body>
+
+    <style>
+        /* searchdiv like spotlight */
+.searchContainer {
+    position: fixed;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--background-alt);
+    border-radius: 10px;
+    width: 80%;
+    max-width: 800px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.searchContainer input {
+    padding: 20px;
+    border: none;
+    background-color: var(--background-alt);
+    color: var(--text);
+    font-size: 1.2rem;
+
+    margin: auto;
+
+
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    /* padding: 10px; */
+    width: 100%;
+
+    /* shadow */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s;
+}
+
+.searchContainer input:focus {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+
+}
+
+.searchResults {
+    /* below search div */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    background-color: var(--background-alt);
+    border-radius: 10px;
+    width: 100%;
+    max-width: 800px;
+    margin-top: 50px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.searchResults ul {
+    list-style: none;
+}
+
+.searchResults ul li {
+    padding: 10px 10px 10px 0px;
+    border-bottom: 1px solid var(--background);
+    color: var(--text);
+
+    border-radius: 10px;
+
+
+    /* hover effect */
+    transition: all 0.2s;
+}
+
+.searchResults ul li:hover {
+    padding: 10px 10px 10px 10px;
+    background-color: var(--background);
+}
+
+/* last li */
+.searchResults ul li:last-child {
+    border-bottom: none;
+}
+
+
+
+    </style>
+
+<div class="searchContainer">
+    <input type="text" id="search" placeholder="Search">
+
+    <div class="searchResults">
+        <ul>
+            <li>Result 1</li>
+            <li>Result 2</li>
+            <li>Result 3</li>
+        </ul>
+    </div>
+</div>
+
+
+    <script src="https://unpkg.com/quick-score@0.0.14/dist/quick-score.min.js"></script>
+<script type="text/javascript">
+    console.log(quickScore.quickScore("thought", "gh"));
+</script>
+    
+</body>
+</html>
