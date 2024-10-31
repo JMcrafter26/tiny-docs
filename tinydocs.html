@@ -662,22 +662,6 @@ function snarkdown(md) {
         navTitle.id = "navTitle";
         nav.insertBefore(navTitle, nav.firstChild);
 
-        // search bar
-        const searchInput = document.createElement("input");
-        searchInput.type = "text";
-        searchInput.placeholder = "Search...";
-        searchInput.id = "searchInput";
-        searchInput.addEventListener("input", (e) => {
-          searchNav(e.target.value);
-        });
-        nav.appendChild(searchInput);
-
-        const searchResults = document.createElement("div");
-        searchResults.id = "searchResults";
-        nav.appendChild(searchResults);
-        
-
-
 
         pages.forEach((page) => {
           const pageId = page.getAttribute("data-pageId");
