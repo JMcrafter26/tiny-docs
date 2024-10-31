@@ -486,7 +486,7 @@ function parse(md, prevLinks) {
 		}
 		// Images:
 		else if (token[8]) {
-			chunk = `<img src="${encodeAttr(token[8])}" alt="${encodeAttr(token[7])}">`;
+			chunk = `<img src="${encodeAttr(token[8])}" alt="${encodeAttr(token[7])}" loading="lazy">`;
 		}
 		// Links:
 		else if (token[10]) {
@@ -853,14 +853,10 @@ if ('serviceWorker' in navigator) {
       let reg;
 
       // Use ES Module version of our Service Worker in development
-      if (import.meta.env?.DEV) {
-        reg = await navigator.serviceWorker.register('./service-worker.js', {
-          type: 'module',
-        });
-      } else {
+      
         // In production, use the normal service worker registration
         reg = await navigator.serviceWorker.register('/service-worker.js');
-      }
+      
 
       console.log('Service worker registered! 😎', reg);
     } catch (err) {
