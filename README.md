@@ -23,7 +23,7 @@ I made this because I wanted a simple way to write documentation and have it in 
 
 # Demo
 
-[Check out the demo](https://raw.githack.com/JMcrafter26/tiny-docs/main/tinydocs-local.html)
+[Check out the demo](https://raw.githack.com/JMcrafter26/tiny-docs/main/tinydocs.html)
 
 ## How to use
 
@@ -34,9 +34,9 @@ I made this because I wanted a simple way to write documentation and have it in 
 
 ## Planned features
 
-- [ ] 🔎 Search
+- [ ] 🔎 Search (Halfway done)
 - [x] 📖 Table of contents
-- [x] 🌐 Full Offline support ([Offline Suport]())
+- [x] 🌐 Full [Offline Suport](#offline-support)
 - [ ] 🛠️ Import from GitHub Wiki
 - [ ] 📝 (Web) Builder
 - [ ] 📤 Export to PDF/Markdown/HTML
