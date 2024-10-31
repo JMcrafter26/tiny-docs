@@ -36,7 +36,20 @@ I made this because I wanted a simple way to write documentation and have it in 
 
 - [ ] 🔎 Search
 - [x] 📖 Table of contents
-- [ ] 🌐 Full Offline support
+- [x] 🌐 Full Offline support ([Offline Suport]())
 - [ ] 🛠️ Import from GitHub Wiki
 - [ ] 📝 (Web) Builder
 - [ ] 📤 Export to PDF/Markdown/HTML
+
+## Advanced usage
+
+### Offline support
+
+> [!NOTE]
+>This is only needed if the file is hosted on a server. If you are using it as a local html file, you don't need to do this (it will work offline by default)
+
+Tiny Docs can be used offline. But not only that, it can be used _fully_ offline. This means that you can use it without an internet connection.
+
+To use Tiny Docs offline, you will need to put `sw.js` in the same directory as `tinydocs.html`. This will allow the service worker to cache the page and allow you to use it offline.
+
+> I know that this defeats the purpose of a single file, but it is the only way to make it work offline. And it is still a single file if you don't use it on a server.
