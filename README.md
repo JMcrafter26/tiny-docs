@@ -1,6 +1,11 @@
 
 # Tiny Docs
 
+![Banner](https://raw.githubusercontent.com/JMcrafter26/tiny-docs/main/.github/banner.png)
+
+[![GitHub license](https://img.shields.io/github/license/JMcrafter26/tiny-docs)](LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/JMcrafter26/tiny-docs)](https.//github/license/JMcrafter26/tiny-docs)
+
 ## What is Tiny Docs
 Tiny Docs is a simple and lightweight (single file!) documentation template that allows you to write documentation in markdown and have it rendered as a static site
 

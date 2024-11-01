@@ -168,6 +168,19 @@
     <div class="container">
         <h1>Tiny Docs Builder</h1>
         <hr>
+        <div id="step0" class="step">
+            <h2>Welcome to Tiny Docs Builder</h2>
+            <p>
+                With Tiny Docs Builder you can create your own (single file) documentation in a few simple steps. Just follow the simple steps to create your documentation.
+            </p>
+            <div class="form">
+                <button class="next" type="button">Start <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="lucide lucide-chevron-right">
+                        <path d="m9 18 6-6-6-6" />
+                    </svg></button>
+            </div>
+        </div>
         <div id="step1" class="step">
             <h2>Step 1: Details of your Documentation</h2>
             <div class="form">
@@ -325,7 +338,7 @@
     <script>
         function init() {
             // set the first step to active
-            document.getElementById('step1').classList.add('active');
+            document.getElementById('step0').classList.add('active');
 
             // add event listeners to the buttons
             document.querySelectorAll('.next').forEach(button => {
