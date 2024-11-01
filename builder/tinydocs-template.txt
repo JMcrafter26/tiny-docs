@@ -678,7 +678,6 @@ function snarkdown(md) {
         });
 
         document.getElementById('searchOpen').addEventListener('click', () => {
-          alert("clicked");
 
           searchContainer.classList.toggle('active');
           searchBackground.classList.toggle('active');

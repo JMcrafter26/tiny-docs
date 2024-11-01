@@ -210,6 +210,7 @@
             </p>
             <form action="#">
                 <label for="docContentIndex">Startpage of your Documentation</label>
+                <input type="text" name="docContentIndexName" id="docContentIndexName" placeholder="Name of the startpage (optional)">
                 <textarea name="docContentIndex" id="docContentIndex" rows="5"
                     placeholder="Paste your startpage content here" data-pageName="index"></textarea>
 
@@ -301,6 +302,14 @@
                             <line x1="12" x2="12" y1="15" y2="3" />
                         </svg></button>
 
+                    <!-- Copyright year -->
+                     <h3>Footer</h3>
+                     <label for="year">Year</label>
+                    <input type="text" name="year" id="year">
+                    <label for="author">Author</label>
+                    <input type="text" name="author" id="author">
+
+
                 </form>
             </details>
         </div>
@@ -316,7 +325,7 @@
     <script>
         function init() {
             // set the first step to active
-            document.getElementById('step3').classList.add('active');
+            document.getElementById('step1').classList.add('active');
 
             // add event listeners to the buttons
             document.querySelectorAll('.next').forEach(button => {
@@ -352,6 +361,9 @@
                 a.download = 'sw.js';
                 a.click();
             });
+
+            // set the year to the current year
+            document.getElementById('year').value = new Date().getFullYear();
         }
 
         function nextStep() {
@@ -478,20 +490,53 @@
             const description = document.getElementById('docDesc').value;
 
             // get the content of the startpage
-            const startpageContent = document.getElementById('docContentIndex').value;
+            let startpageContent = document.getElementById('docContentIndex').value;
+            const startpageName = document.getElementById('docContentIndexName').value;
+
+            // if the startpage content is empty, use default content
+            if (!startpageContent) {
+                startpageContent = `# Welcome to Tiny Docs
+
+            This is the startpage of your documentation. You can add your content here.
+
+            I hope you enjoy using Tiny Docs!
+            
+            ## Help
+
+            If you need help, you can open an issue on the [GitHub repository](https://github.com/JMcrafter26/tiny-docs/issues).
+
+            ## Contributing
+
+            If you want to contribute to Tiny Docs, you can fork the repository and create a pull request.
+
+            ## License
+
+            Tiny Docs is licensed under the MIT License.
+
+            [Tiny Docs on GitHub](https://github.com/JMcrafter26/tiny-docs/)
+            `;
+            }
+
 
             // get the additional pages
             const additionalPages = document.querySelectorAll('#additionalPages textarea');
+            const year = document.getElementById('year').value;
+            const author = document.getElementById('author').value;
 
             // create the documentation object
             const documentation = {
                 title: title,
                 description: description,
+       
                 startpage: {
                     content: startpageContent,
-                    name: 'index'
+                    name: startpageName
                 },
-                pages: []
+                pages: [],
+                footer: {
+                    year: year,
+                    author: author
+                }
             };
 
             // loop through the additional pages
@@ -506,13 +551,11 @@
             });
 
             // create the documentation file
-            const documentationFile = createDocumentationFile(documentation);
-
-            // download the documentation file
-            downloadDocumentation(documentationFile);
+            createDocumentationFile(documentation);
         }
 
         function createDocumentationFile(documentation) {
+            console.log(documentation);
             // load tinydocs-template.txt using fetch
             return fetch('https://raw.githack.com/JMcrafter26/tiny-docs/main/builder/tinydocs-template.txt')
                 .then(response => response.text())
@@ -521,6 +564,7 @@
                     let documentationFile = template.replace('{{title}}', documentation.title);
                     documentationFile = documentationFile.replace('{{description}}', documentation.description);
                     documentationFile = documentationFile.replace('{{indexPage}}', documentation.startpage.content);
+                    documentationFile = documentationFile.replace('{{indexPageTitle}}', documentation.startpage.name);
 
                     // create additional pages
                     let additionalPages = '';
@@ -541,12 +585,19 @@
 
                     documentationFile = documentationFile.replace('{{pages}}', additionalPages);
 
-                    // return the documentation file
-                    return documentationFile;
+                    // replace the footer
+                    documentationFile = documentationFile.replace('{{year}}', documentation.footer.year);
+                    documentationFile = documentationFile.replace('{{author}}', documentation.footer.author);
+
+
+                    console.log(documentationFile);
+                    downloadDocumentation(documentationFile);
                 });
         }
 
         function downloadDocumentation(documentationFile) {
+
+
             // create a new blob
             const blob = new Blob([documentationFile], {
                 type: 'text/html'
