@@ -514,26 +514,52 @@
 
         function createDocumentationFile(documentation) {
             // load tinydocs-template.txt using fetch
-            return fetch('tinydocs-template.txt')
+            return fetch('https://raw.githack.com/JMcrafter26/tiny-docs/main/builder/tinydocs-template.txt')
                 .then(response => response.text())
                 .then(template => {
                     // replace the placeholders in the template with the documentation data
                     let documentationFile = template.replace('{{title}}', documentation.title);
                     documentationFile = documentationFile.replace('{{description}}', documentation.description);
-                    documentationFile = documentationFile.replace('{{startpageContent}}', documentation.startpage.content);
-                    documentationFile = documentationFile.replace('{{startpageName}}', documentation.startpage.name);
+                    documentationFile = documentationFile.replace('{{indexPage}}', documentation.startpage.content);
 
-                    // loop through the additional pages
+                    // create additional pages
+                    let additionalPages = '';
                     documentation.pages.forEach(page => {
-                        // create a new page element
-                        const pageElement = `<div id="${page.name}" class="page">${page.content}</div>`;
-                        // add the page element to the documentation file
-                        documentationFile = documentationFile.replace('{{additionalPages}}', pageElement + '{{additionalPages}}');
+                        additionalPages += `<page data-pageId="${page.name}">${page.content}</page>`;
                     });
+
+                    // if 404 page is not specified, add the default 404 page
+                    if (!documentation.pages.find(page => page.name === '404')) {
+                        additionalPages += `<page data-pageId="404">
+                            # 404 Page Not Found
+
+                            The page you are looking for does not exist.
+
+                            [Go back to the startpage](?)
+                        </page>`;
+                    }
+
+                    documentationFile = documentationFile.replace('{{pages}}', additionalPages);
 
                     // return the documentation file
                     return documentationFile;
                 });
+        }
+
+        function downloadDocumentation(documentationFile) {
+            // create a new blob
+            const blob = new Blob([documentationFile], {
+                type: 'text/html'
+            });
+
+            // create a new URL
+            const url = URL.createObjectURL(blob);
+
+            // create a new a element
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'documentation.html';
+            a.click();
         }
 
     </script>

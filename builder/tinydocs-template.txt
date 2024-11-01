@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    {{title}}
+    <title>{{title}}</title>
     <script>window.startTimer = Date.now();</script>
     <meta name="robots" content="all">
     <meta name="description" content="{{description}}">
@@ -500,7 +500,7 @@ opacity: 0;
   </div>
 
     <div class="content">
-      <page data-pageId="index" data-title="Home">
+      <page data-pageId="index" data-title="{{indexPageTitle}}">
         {{indexPage}}
       </page>
       
