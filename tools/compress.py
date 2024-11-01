@@ -167,13 +167,13 @@ def main():
     
     # calculate the size of the original and compressed files
     original_size = os.path.getsize(f'{temp_dir}/{file_name}_embedded.html')
-    compressed_size = os.path.getsize(f'{output_dir}/{file_name}.html.gz')
+    compressed_size = os.path.getsize(f'{output_dir}/{file_name}.html')
 
     
 
     print('Done')
     print(f'File is now {100 - (compressed_size/original_size*100):.2f}% smaller than the original! ({original_size} bytes -> {compressed_size} bytes)')
-    print(f'Output file: {output_dir}/index.html')
+    print(f'Output file: {output_dir}/{file_name}.html')
 
 
 

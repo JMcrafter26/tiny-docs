@@ -309,6 +309,159 @@
     </style>
 
 
+<style>
+  /* searchdiv like spotlight */
+.searchContainer {
+position: fixed;
+top: 20%;
+left: 50%;
+transform: translate(-50%, -50%);
+background-color: var(--background-alt);
+border-radius: 10px;
+width: 80%;
+max-width: 800px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+z-index: 3;
+
+display: none;
+
+transition: all 0.2s;
+}
+
+.searchContainer.active {
+display: flex;
+}
+
+
+.searchContainer input {
+padding: 20px;
+border: none;
+background-color: var(--background-alt);
+color: var(--text);
+font-size: 1.2rem;
+
+margin: auto;
+
+
+border-radius: 10px;
+display: flex;
+align-items: center;
+/* padding: 10px; */
+width: 100%;
+
+/* shadow */
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+transition: all 0.2s;
+}
+
+.searchContainer input:focus {
+box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+
+}
+
+.searchResults {
+/* below search div */
+position: fixed;
+top: 50%;
+left: 50%;
+transform: translate(-50%, 0);
+background-color: var(--background-alt);
+border-radius: 10px;
+width: 100%;
+max-width: 800px;
+margin-top: 50px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+height: auto;
+transition: all 0.2s;
+
+}
+
+.searchResults ul {
+list-style: none;
+/* make it scrollable */
+max-height: 50vh;
+overflow-y: auto;
+}
+
+.searchResults ul li {
+padding: 10px 10px 10px 0px;
+border-bottom: 1px solid var(--background);
+color: var(--text);
+
+border-radius: 10px;
+user-select: none;
+cursor: pointer;
+
+
+/* hover effect */
+transition: all 0.2s;
+}
+
+.searchResults ul li:hover {
+padding: 10px 10px 10px 10px;
+background-color: var(--background);
+}
+
+/* last li */
+.searchResults ul li:last-child {
+border-bottom: none;
+}
+
+/* dim background */
+.searchBackground {
+position: fixed;
+top: 0;
+left: 0;
+bottom: 0;
+right: 0;
+background-color: rgba(0, 0, 0, 0.3);
+z-index: 2;
+/* blur */
+backdrop-filter: blur(3px);
+-webkit-backdrop-filter: blur(3px);
+
+display: none;
+}
+
+.searchBackground.active {
+display: block;
+}
+
+
+/* search icon, at the bottom right */
+#searchIcon {
+position: fixed;
+bottom: 20px;
+right: 20px;
+z-index: 3;
+opacity: 1;
+transition: all 0.1s;
+}
+
+#searchOpen {
+background-color: var(--background-alt);
+color: var(--text);
+border-radius: 10px;
+padding: 13px;
+cursor: pointer;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+transition: all 0.2s;
+}
+
+#searchOpen:hover {
+background-color: var(--background);
+}
+
+#searchIcon.hide {
+opacity: 0;
+}
+
+
+
+</style>
+
   </head>
   <body>
     <noscript><h1>Oh no!</h1>
@@ -332,6 +485,21 @@
       <h4 id="messageTitle"></h4>
       <p id="messageContent"></p>
     </div>
+
+    <div class="searchContainer">
+      <input type="text" id="search" placeholder="Search">
+  
+      <div class="searchResults" id="searchResults">
+              <p style="color: var(--text-muted); text-align: center; ">Start typing to search</p>
+      </div>
+  </div>
+  <div class="searchBackground"></div>
+  
+  <div id="searchIcon">
+      <button id="searchOpen">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      </button>
+  </div>
 
     <div class="content">
       <page data-pageId="index" data-title="Home">
@@ -575,6 +743,294 @@ function snarkdown(md) {
     </script>
 <!-- <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.10.0/build/highlight.min.js"></script> -->
     <script>
+      function init() {
+        const pages = document.querySelectorAll("page");
+        const searchInput = document.getElementById('search');
+        const searchContainer = document.querySelector('.searchContainer');
+        const searchBackground = document.querySelector('.searchBackground');
+        const searchBtn = document.getElementById('searchIcon');
+
+        // Prepare the current page first
+        const urlParams = new URLSearchParams(window.location.search);
+        let page = urlParams.get("page") || "index";
+        if (!document.querySelector(`page[data-pageId="${page}"]`)) {
+          page = "404";
+        }
+        showPage(page);
+        prepareCurrentPage(page);
+
+        // Apply markdown to other pages
+        pages.forEach((pg) => {
+          if (pg.getAttribute("data-pageId") === page) return;
+          const markdown = pg.textContent.trim().replace(/^ +/gm, "");
+          const htmlContent = snarkdown(markdown);
+
+          // Inject IDs into the headings post-conversion
+          const tempDiv = document.createElement("div");
+          tempDiv.innerHTML = htmlContent;
+          tempDiv.querySelectorAll("h1, h2, h3, h4, h5, h6").forEach((heading) => {
+            const id = heading.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+            heading.setAttribute("id", id);
+          });
+          pg.innerHTML = tempDiv.innerHTML;
+        });
+
+        // Build the navigation
+        buildNav(page);
+        updateNavActive(page + window.location.hash);
+
+
+        // Add event listeners for search
+        searchInput.addEventListener("input", (e) => {
+          const query = e.target.value;
+          searchPage(query);
+        });
+
+        document.getElementById('searchOpen').addEventListener('click', () => {
+          alert("clicked");
+
+          searchContainer.classList.toggle('active');
+          searchBackground.classList.toggle('active');
+          searchInput.focus();
+          searchBtn.classList.toggle('hide');
+        });
+
+        document.addEventListener('keydown', (e) => {
+          if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+            e.preventDefault();
+            searchContainer.classList.add('active');
+            searchBackground.classList.add('active');
+            searchInput.focus();
+            searchBtn.classList.add('hide');
+          }
+
+          // Close with ESC
+          if (e.key === 'Escape') {
+            searchContainer.classList.remove('active');
+            searchBackground.classList.remove('active');
+            searchInput.value = '';
+            searchInput.blur();
+            searchBtn.classList.remove('hide');
+          }
+        });
+
+        // Click outside to close
+        searchBackground.addEventListener('click', () => {
+          searchContainer.classList.remove('active');
+          searchBackground.classList.remove('active');
+          searchInput.value = '';
+          searchInput.blur();
+          searchBtn.classList.remove('hide');
+        });
+
+        // Add event listeners for navigation links
+        document.querySelectorAll("a[href^='?page=']").forEach((a) => {
+          a.addEventListener("click", (e) => {
+            e.preventDefault();
+            let pageId = a.getAttribute("href").split("?page=")[1];
+            let hash = null;
+            if (pageId.includes("#")) {
+              hash = pageId.split("#")[1];
+              pageId = pageId.split("#")[0];
+              updateUrl(pageId, hash);
+            } else {
+              updateUrl(pageId);
+            }
+            showPage(pageId);
+            updateNavActive(pageId, hash);
+
+            if (hash) {
+              const element = document.querySelector(`#${hash}`);
+              if (element) {
+                window.userScrolling = (Date.now() + 700);
+                element.scrollIntoView({ behavior: "smooth" });
+              }
+            } else {
+              window.userScrolling = (Date.now() + 700);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+          });
+        });
+
+        // Handle scroll events for updating active navigation link
+        window.addEventListener("scroll", () => {
+          if (Date.now() < window.userScrolling) return;
+          const urlParams = new URLSearchParams(window.location.search);
+          const pageId = urlParams.get("page");
+          const currentPages = document.querySelectorAll("page[data-pageId='" + pageId + "']");
+          if (currentPages.length === 0) return;
+          const current = currentPages[0];
+          const headings = current.querySelectorAll("[data-anchor]");
+
+          let activeHeading = null;
+          if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+            activeHeading = headings[headings.length - 1];
+          } else {
+            headings.forEach((heading) => {
+              if (heading.getBoundingClientRect().top > 0 && heading.getBoundingClientRect().top < 200) {
+                activeHeading = heading;
+                return;
+              }
+            });
+          }
+
+          if (activeHeading) {
+            const pageId = activeHeading.closest("page").getAttribute("data-pageId");
+            const hash = activeHeading.getAttribute("id");
+            updateNavActive(pageId, hash);
+            updateUrl(pageId, hash);
+          }
+        });
+
+        const endTime = Date.now();
+        console.log("Load and render time: ", endTime - window.startTimer + "ms");
+      }
+
+
+      function searchPage(query) {
+        if (!query.trim()) {
+          document.getElementById('searchResults').innerHTML = '<p style="color: var(--text-muted); text-align: center; ">Start typing to search</p>';
+          return;
+        }
+
+        const pages = document.querySelectorAll("page");
+        const results = [];
+
+        pages.forEach((page) => {
+          const pageId = page.getAttribute('data-pageId');
+          const pageTitle = page.getAttribute('data-title') || pageId;
+
+          const elements = page.querySelectorAll('h1, h2, h3, h4, h5, h6, p, li');
+          elements.forEach((element) => {
+            const text = element.textContent.trim();
+            if (!text) return;
+
+            const score = quickScore.quickScore(text, query);
+            if (score > 0.1) {
+              let context = element.tagName.toLowerCase().startsWith('h') 
+                ? element.textContent 
+                : findNearestHeading(element);
+
+              results.push({
+                score,
+                pageTitle,
+                pageId,
+                element,
+                context: createExcerpt(text, query),
+                heading: context
+              });
+            }
+          });
+        });
+
+        results.sort((a, b) => b.score - a.score);
+        const resultsHtml = results.map(result => `
+          <li onclick="scrollToSection('${result.pageId}', '${result.heading.toLowerCase().replace(/[^a-z0-9]+/g, '-')}', '${query}')">
+            <strong>${result.pageTitle}</strong>
+            ${result.heading ? ` › ${result.heading}` : ''}
+            <div style="margin-top: 5px; font-size: 0.9em; opacity: 0.8;">
+              ${result.context}
+            </div>
+          </li>
+        `).join('');
+
+        document.getElementById('searchResults').innerHTML = resultsHtml ? `<ul>${resultsHtml}</ul>` : '<p style="color: var(--text-muted); text-align: center; ">No results found</p>';
+      }
+
+      function scrollToSection(pageId, sectionId, query) {
+        const page = document.querySelector(`page[data-pageId="${pageId}"]`);
+        // if page is not found, show the 404 page
+        if (!page) {
+          showPage("404");
+          return;
+        }
+        // if page is not the current page, show the page
+        if (page.style.display === "none") {
+          showPage(pageId);
+        }
+
+        const section = page.querySelector(`[id="${sectionId}"]`);
+        if (section) {
+          section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          highlightText(section, query);
+        }
+
+        document.querySelector('.searchContainer').classList.remove('active');
+        document.querySelector('.searchBackground').classList.remove('active');
+        document.querySelector('#search').value = '';
+        document.querySelector('#search').blur();
+        document.querySelector('#searchIcon').classList.remove('hide');
+      }
+
+      function highlightText(section, query) {
+        const queryTerms = query.toLowerCase().split(/\s+/);
+        let innerHTML = section.cloneNode(true).innerHTML;
+
+        queryTerms.forEach(term => {
+          if (term.trim()) {
+            const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            innerHTML = innerHTML.replace(
+              new RegExp(escapedTerm, 'gi'),
+              match => `<mark style="background-color: var(--highlight); color: var(--button-base); padding: 0 2px; border-radius: 2px;">${match}</mark>`
+            );
+          }
+        });
+
+        section.innerHTML = innerHTML;
+      }
+
+      function findNearestHeading(element) {
+        let current = element;
+        while (current) {
+          let sibling = current.previousElementSibling;
+          while (sibling) {
+            if (sibling.tagName.match(/^H[1-6]$/)) {
+              return sibling.textContent;
+            }
+            sibling = sibling.previousElementSibling;
+          }
+          current = current.parentElement;
+        }
+        return null;
+      }
+
+      function createExcerpt(text, query) {
+        const words = text.split(/(\s+)/).filter(word => word.trim());
+        const queryTerms = query.toLowerCase().split(/\s+/);
+
+        let bestStart = 0;
+        let bestEnd = Math.min(20, words.length);
+        let maxQueryMatches = 0;
+
+        for (let i = 0; i < words.length - 10; i++) {
+          let matches = 0;
+          const window = words.slice(i, i + 20).join('').toLowerCase();
+          queryTerms.forEach(term => {
+            if (window.includes(term)) matches++;
+          });
+
+          if (matches > maxQueryMatches) {
+            maxQueryMatches = matches;
+            bestStart = i;
+            bestEnd = Math.min(i + 20, words.length);
+          }
+        }
+
+        const excerpt = words.slice(bestStart, bestEnd).join('');
+        let highlightedExcerpt = excerpt;
+
+        queryTerms.forEach(term => {
+          if (term.trim()) {
+            const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            highlightedExcerpt = highlightedExcerpt.replace(
+              new RegExp(escapedTerm, 'gi'),
+              match => `<mark style="background-color: var(--highlight); color: var(--button-base); padding: 0 2px; border-radius: 2px;">${match}</mark>`
+            );
+          }
+        });
+
+        return bestStart > 0 ? `...${highlightedExcerpt}...` : `${highlightedExcerpt}...`;
+      }
       function showMessage(type, title, message = '') {
   console.log(`%c${title}`, `color: white; background-color: var(--${type}); padding: 5px; border-radius: 5px;`);
 
@@ -782,131 +1238,6 @@ function snarkdown(md) {
         });
       }
 
-      function init() {
-        // if ?page is in the URL, show that page
-        const urlParams = new URLSearchParams(window.location.search);
-        let page = urlParams.get("page");
-        if (page) {
-          // check if the page exists, if it does not, show the 404 page
-          if (!document.querySelector(`page[data-pageId="${page}"]`)) {
-            page = "404";
-          }
-          showPage(page);
-        } else {
-          showPage("index");
-          page = "index";
-        }
-
-        // add event listeners if url changes
-        window.addEventListener("popstate", () => {
-          const urlParams = new URLSearchParams(window.location.search);
-          const page = urlParams.get("page");
-          showPage(page);
-        });
-
-        prepareCurrentPage(page);
-
-        // wait 2 seconds before applying markdown and building the nav
-          applyMarkdown(page);
-          buildNav(page);
-          updateNavActive(page + window.location.hash);
-
-
-        // add event listeners to all links with href="?page=..." (# optional, if it exists, scroll to the element with that id)
-        document.querySelectorAll("a[href^='?page=']").forEach((a) => {
-          a.addEventListener("click", (e) => {
-            e.preventDefault();
-            // check if the href has a #, if it does, scroll to the element with that id
-            let pageId = a.getAttribute("href").split("?page=")[1];
-            let hash = null;
-            if (pageId.includes("#")) {
-              hash = pageId.split("#")[1];
-              pageId = pageId.split("#")[0];
-              console.log('hash', hash);
-              updateUrl(pageId, hash);
-            } else {
-              console.log('no hash');
-              updateUrl(pageId);
-            }
-
-            console.log('pageId', pageId);
-            showPage(pageId);
-            updateNavActive(pageId, hash);
-            
-
-            // scroll to the element with the id
-            if (hash) {
-              const element = document.querySelector(`#${hash}`);
-              if (element) {
-                 window.userScrolling = (Date.now() + 700);
-                element.scrollIntoView({ behavior: "smooth" });
-              }
-            } else {
-              // scroll to the top of the page, smooth scroll
-               window.userScrolling = (Date.now() + 700);
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }
-          });
-        });
-
-        // add event listener to the open button, animate the nav sliding in from the left
-        const openBtn = document.querySelector(".openBtn");
-        // toggle active class on the nav
-        openBtn.addEventListener("click", () => {
-          document.querySelector("nav").classList.toggle("active");
-          openBtn.classList.toggle("active");
-          document.querySelector(".content").classList.toggle("active");
-        });
-
-        // userscrolling timestamp + 1 second
-        window.userScrolling = (Date.now() + 100);
-
-
-        window.addEventListener("scroll", () => {
-          if (Date.now() < window.userScrolling) {
-            return;
-          }
-          // get current page from url
-          const urlParams = new URLSearchParams(window.location.search);
-          const pageId = urlParams.get("page");          
-          const currentPages = document.querySelectorAll("page[data-pageId='" + pageId + "']");
-          if (currentPages.length === 0) {
-            return;
-          }
-          const current = currentPages[0];
-          const headings = current.querySelectorAll("[data-anchor]");
-
-          let activeHeading = null;
-          // if scrolled to the bottom of the page, set the last link as active
-          if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-            activeHeading = headings[headings.length - 1];
-          } else {
-            headings.forEach((heading) => {
-              if (
-                heading.getBoundingClientRect().top > 0 &&
-                heading.getBoundingClientRect().top < 200
-              ) {
-                activeHeading = heading;
-                // break out of the loop
-                return;
-              }
-            });
-          }
-
-          if (activeHeading) {
-            const pageId = activeHeading.closest("page").getAttribute("data-pageId");
-            const hash = activeHeading.getAttribute("id");
-            updateNavActive(pageId, hash);
-            updateUrl(pageId, hash);
-            // console.log("active heading", activeHeading);
-          }
-        });
-
-        const endTime = Date.now();
-        console.log("Load and render time: ", endTime - window.startTimer + "ms");
-
-
-      }
 
     // on Dom finish loading, call init
     document.addEventListener("DOMContentLoaded", init);
