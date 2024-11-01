@@ -42,8 +42,8 @@ Also check out the [Web Builder](https://raw.githack.com/JMcrafter26/tiny-docs/m
 ## Planned features
 
 - [ ] 🔎 Search [Halfway done](https://raw.githack.com/JMcrafter26/tiny-docs/main/test/search.html)
-- [x] ~~📖 Table of contents~~ ✅
-- [x] ~~🌐 Full [Offline Suport](#offline-support) ✅
+- [x] 📖 Table of contents
+- [x] 🌐 Full [Offline Suport](#offline-support)
 - [ ] 🛠️ Import from GitHub Wiki
 - [x] 📝 [Web Builder](https://raw.githack.com/JMcrafter26/tiny-docs/main/builder/builder.html) (Currently in Beta)
 - [ ] 📤 Export to PDF/Markdown/HTML
