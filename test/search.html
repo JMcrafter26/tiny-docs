@@ -89,6 +89,8 @@
     color: var(--text);
 
     border-radius: 10px;
+    user-select: none;
+    cursor: pointer;
 
 
     /* hover effect */
@@ -542,6 +544,9 @@ return parse(md);
             
             document.querySelector('.searchContainer').classList.remove('active');
             document.querySelector('.searchBackground').classList.remove('active');
+            document.querySelector('#search').value = '';
+            document.querySelector('#search').blur();
+            document.querySelector('#searchIcon').classList.remove('hide');
             
         }
     
