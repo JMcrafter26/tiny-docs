@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiny Docs Builder</title>
+    <link rel="stylesheet" href="water.css">
+    <style>
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .step {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        .step form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .step details {
+            margin-top: 50px;
+        }
+
+        noscript {
+            background: red;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+
+            /* center the noscript element */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            z-index: 1000;
+        }
+
+        svg {
+            width: 1em;
+            height: 1em;
+            vertical-align: middle;
+        }
+
+
+        .step .buttons {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+
+        #step1.active .next {
+            width: 100%;
+        }
+
+        .next {
+            width: 100%;
+        }
+
+        .back {
+            width: 30%;
+        }
+
+        .next svg {
+            transform: translateX(0);
+            transition: transform 0.3s;
+        }
+
+        .next:hover svg {
+            transform: translateX(5px);
+        }
+
+        .back svg {
+            transform: translateX(0);
+            transition: transform 0.3s;
+        }
+
+        .back:hover svg {
+            transform: translateX(-5px);
+        }
+
+        /* on mobile hide back text and only show the arrow */
+        @media (max-width: 600px) {
+            .back span {
+                display: none;
+            }
+        }
+
+        #additionalPages {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #additionalPages label {
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        .userPrompt {
+            width: 400px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+        .userPrompt h2 {
+            margin-bottom: 30px;
+        }
+
+
+        .userPrompt input {
+            width: 90%;
+            margin-bottom: 10px;
+        }
+
+        .userPrompt button {
+            width: 50%;
+            margin-top: 10px;
+        }
+
+        #downloadSW {
+            opacity: 0.8;
+        }
+
+        #downloadSW:hover {
+            opacity: 1;
+        }
+
+        label[for="downloadSW"] {
+            color: var(--text-muted);
+        }
+
+        .building {
+            display: inline-block;
+            animation: spin 1s linear infinite;
+            width: 1em;
+            height: 1em;
+            margin-left: 5px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Tiny Docs Builder</h1>
+        <hr>
+        <div id="step1" class="step">
+            <h2>Step 1: Details of your Documentation</h2>
+            <form action="#">
+                <label for="docTitle">Title of your Documentation</label>
+                <input type="text" name="docTitle" id="docTitle" placeholder="Optional">
+
+                <br>
+                <label for="docDesc">Description of your Documentation</label>
+                <textarea name="docDesc" id="docDesc" rows="5" placeholder="Optional"></textarea>
+                <div class="buttons">
+                    <button class="next" type="button">Next <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right">
+                            <path d="m9 18 6-6-6-6" />
+                        </svg></button>
+                </div>
+
+
+                <details>
+                    <summary>What are these details for?</summary>
+                    <h3>Title</h3>
+                    <p>The title will be used as the page title and the heading of the navigation bar.</p>
+                    <p>If left empty, the title will be set to the first heading of the documentation.</p>
+                    <br>
+                    <h3>Description</h3>
+                    <p>The description will be used as the meta description of the documentation. (SEO)</p>
+                    <p>If left empty, the description will be set to the first paragraph of the documentation (with
+                        JavaScript, which is not recommended).</p>
+                </details>
+            </form>
+        </div>
+
+        <div id="step2" class="step">
+            <h2>Step 2: Add your Documentation</h2>
+            <p>
+                This is the main part of your documentation. You can add the content of your documentation here. Your
+                documentation needs to be written in <a
+                    href="https://gist.github.com/JMcrafter26/b6428ddeb6cd40e3fc99ff6df74ff707#file-edited-markdown-cheat-sheet-md"
+                    target="_blank" rel="noopener noreferrer">Markdown</a>.
+            </p>
+            <form action="#">
+                <label for="docContentIndex">Startpage of your Documentation</label>
+                <textarea name="docContentIndex" id="docContentIndex" rows="5"
+                    placeholder="Paste your startpage content here" data-pageName="index"></textarea>
+
+                <p style="margin-bottom: 5px;">Additional Pages</p>
+                <div id="additionalPages">
+                    <button id="addPageBtn" onclick="addPage()">Add Page <svg xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus">
+                            <path d="M5 12h14" />
+                            <path d="M12 5v14" />
+                        </svg></button>
+                </div>
+
+                <div class="buttons">
+                    <button class="back" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-chevron-left">
+                            <path d="m15 18-6-6 6-6" />
+                        </svg> <span>Back</span>
+                    </button>
+                    <button class="next" type="button">Next <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right">
+                            <path d="m9 18 6-6-6-6" />
+                        </svg></button>
+                </div>
+
+                <details>
+                    <summary>What is this for?</summary>
+                    <p>Here you can add the content of your documentation. You can add multiple pages by clicking the
+                        "Add Page" button.</p>
+                    <p>Each page needs to be written in Markdown.</p>
+                    <br>
+                    <h3>Startpage (index)</h3>
+                    <p>This is the first page of your documentation. It will be the page that is shown when the user
+                        opens the documentation.</p>
+                    <h3>Additional Pages</h3>
+                    <p>Here you can add additional pages to your documentation. The names of the pages will be used as
+                        the navigation links and can only contain letters, numbers, and dashes.</p>
+                    <h3>Special Pages</h3>
+                    <p>There are some special pages that you can add to your documentation:</p>
+                    <ul>
+                        <li><strong>404</strong>: This page will be shown when the user tries to access a page that does
+                            not exist. <br>
+                            It will be automatically generated if not specified.</li>
+                    </ul>
+                </details>
+            </form>
+        </div>
+
+        <div id="step3" class="step">
+            <h2>Step 3: Download your Documentation</h2>
+            <p>
+                Your documentation is ready! You can now download it as a single HTML file.
+            </p>
+            <form action="#">
+                <button type="button" id="downloadButton">Download <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="lucide lucide-download">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="7 10 12 15 17 10" />
+                        <line x1="12" x2="12" y1="15" y2="3" />
+                    </svg></button>
+            </form>
+
+            <div class="buttons">
+                <button class="back" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-chevron-left">
+                        <path d="m15 18-6-6 6-6" />
+                    </svg> <span>Back</span>
+                </button>
+            </div>
+
+            <details>
+                <summary>Additonal Options</summary>
+                <form action="#">
+                    <label for="downloadSW">You will need the SW.js file if you want to use Tiny Docs offline. This is
+                        only needed if the file is hosted on a server. <br><strong>If you are using it as a local html
+                            file, you don't need to do this</strong> (it will work offline by default)</label>
+                    <button id="downloadSW" type="button">Download SW.js <svg xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-download">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" x2="12" y1="15" y2="3" />
+                        </svg></button>
+
+                </form>
+            </details>
+        </div>
+
+    </div>
+
+    <noscript>
+        <h1>Oh no!</h1>
+        <p>This page requires JavaScript to work. Please enable JavaScript in your browser settings.</p>
+        <p><a target="_blank" href="https://www.enable-javascript.com/">How to enable JavaScript</a></p>
+    </noscript>
+
+    <script>
+        function init() {
+            // set the first step to active
+            document.getElementById('step3').classList.add('active');
+
+            // add event listeners to the buttons
+            document.querySelectorAll('.next').forEach(button => {
+                button.addEventListener('click', nextStep);
+            });
+
+            document.querySelectorAll('.back').forEach(button => {
+                button.addEventListener('click', backStep);
+            });
+
+            // add event listener to the download button
+            document.getElementById('downloadButton').addEventListener('click', () => {
+                // change the text of the button to building...
+                const downloadButton = document.getElementById('downloadButton');
+                downloadButton.innerHTML = 'Building' + '<svg class="building" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cog"><path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z"/><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/><path d="M12 2v2"/><path d="M12 22v-2"/><path d="m17 20.66-1-1.73"/><path d="M11 10.27 7 3.34"/><path d="m20.66 17-1.73-1"/><path d="m3.34 7 1.73 1"/><path d="M14 12h8"/><path d="M2 12h2"/><path d="m20.66 7-1.73 1"/><path d="m3.34 17 1.73-1"/><path d="m17 3.34-1 1.73"/><path d="m11 13.73-4 6.93"/></svg>';
+                // build the documentation
+                try {
+                    buildDocumentation();
+                } catch (error) {
+                    console.error(error);
+                }
+
+                // change the text of the button back to download
+                downloadButton.innerHTML = 'Download <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>';
+            });
+
+            // add event listener to the download SW button
+            document.getElementById('downloadSW').addEventListener('click', () => {
+                const url = 'https://raw.githack.com/JMcrafter26/tiny-docs/refs/heads/main/sw.js';
+                const a = document.createElement('a');
+                a.href = url;
+                a.target = '_blank';
+                a.download = 'sw.js';
+                a.click();
+            });
+        }
+
+        function nextStep() {
+            // get the current step number
+            const currentStep = document.querySelector('.step.active');
+            const currentStepNumber = parseInt(currentStep.id.replace('step', ''));
+            console.log(currentStepNumber);
+            // get the next step
+            const nextStep = document.getElementById('step' + (currentStepNumber + 1));
+
+            // if there is a next step
+            if (nextStep) {
+                // remove the active class from the current step
+                currentStep.classList.remove('active');
+                // add the active class to the next step
+                nextStep.classList.add('active');
+            }
+
+
+        }
+
+        function backStep() {
+            // get the current step
+            const currentStep = document.querySelector('.step.active');
+            // get the back step
+            const backStep = currentStep.previousElementSibling;
+
+            // if there is a back step
+            if (backStep) {
+                // remove the active class from the current step
+                currentStep.classList.remove('active');
+                // add the active class to the back step
+                backStep.classList.add('active');
+            }
+        }
+
+        function promptUser(promptText) {
+            return;
+            // delete the old dialog if it exists
+            const oldDialog = document.getElementById('promptDialog');
+            if (oldDialog) {
+                oldDialog.remove();
+            }
+
+            // create new dialog
+            const dialog = document.createElement('dialog');
+
+            // create new h1 element
+            const h1 = document.createElement('h2');
+            const input = document.createElement('input');
+            const button = document.createElement('button');
+
+            h1.textContent = promptText;
+            input.type = 'text';
+            input.id = 'userInput';
+            input.placeholder = 'Enter your text here';
+            button.textContent = 'OK';
+
+            // add an event listener to the button
+            button.addEventListener('click', function () {
+                dialog.close();
+                dialog.remove();
+            });
+
+            // add the h1 element to the dialog
+            dialog.appendChild(h1);
+            dialog.appendChild(input);
+            dialog.appendChild(button);
+            dialog.id = 'promptDialog';
+            dialog.className = 'userPrompt';
+
+            // add the dialog to the body
+            document.body.appendChild(dialog);
+
+            // show the dialog
+            dialog.showModal();
+        }
+
+        function addPage() {
+            // ask for the page name
+            let pageName = prompt('Enter the name of the page');
+            pageName = pageName.replace(/\s/g, '-');
+            pageName = pageName.replace(/[^a-zA-Z0-9-]/g, '');
+
+            const additionalPages = document.getElementById('additionalPages');
+            const page = document.createElement('textarea');
+            const pageNameLabel = document.createElement('label');
+            page.setAttribute('rows', '5');
+            page.setAttribute('placeholder', 'Paste your content here');
+            page.setAttribute('data-pageName', pageName);
+            pageNameLabel.textContent = pageName;
+            pageNameLabel.setAttribute('for', pageName);
+
+            // add span with delete button
+            const deleteButton = document.createElement('span');
+            deleteButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>';
+            deleteButton.style.cursor = 'pointer';
+            // display on the right
+            deleteButton.style.float = 'right';
+            deleteButton.style.marginRight = '3px';
+
+            deleteButton.addEventListener('click', function () {
+                page.remove();
+                pageNameLabel.remove();
+                deleteButton.remove();
+            });
+
+            pageNameLabel.appendChild(deleteButton);
+
+            additionalPages.appendChild(pageNameLabel);
+            additionalPages.appendChild(page);
+        }
+
+
+        // call the init function
+        document.addEventListener("DOMContentLoaded", init);
+
+
+        function buildDocumentation() {
+
+
+            // get the title and description
+            const title = document.getElementById('docTitle').value;
+            const description = document.getElementById('docDesc').value;
+
+            // get the content of the startpage
+            const startpageContent = document.getElementById('docContentIndex').value;
+
+            // get the additional pages
+            const additionalPages = document.querySelectorAll('#additionalPages textarea');
+
+            // create the documentation object
+            const documentation = {
+                title: title,
+                description: description,
+                startpage: {
+                    content: startpageContent,
+                    name: 'index'
+                },
+                pages: []
+            };
+
+            // loop through the additional pages
+            additionalPages.forEach(page => {
+                const pageContent = page.value;
+                const pageName = page.getAttribute('data-pageName');
+
+                documentation.pages.push({
+                    name: pageName,
+                    content: pageContent
+                });
+            });
+
+            // create the documentation file
+            const documentationFile = createDocumentationFile(documentation);
+
+            // download the documentation file
+            downloadDocumentation(documentationFile);
+        }
+
+        function createDocumentationFile(documentation) {
+            // load tinydocs-template.txt using fetch
+            return fetch('tinydocs-template.txt')
+                .then(response => response.text())
+                .then(template => {
+                    // replace the placeholders in the template with the documentation data
+                    let documentationFile = template.replace('{{title}}', documentation.title);
+                    documentationFile = documentationFile.replace('{{description}}', documentation.description);
+                    documentationFile = documentationFile.replace('{{startpageContent}}', documentation.startpage.content);
+                    documentationFile = documentationFile.replace('{{startpageName}}', documentation.startpage.name);
+
+                    // loop through the additional pages
+                    documentation.pages.forEach(page => {
+                        // create a new page element
+                        const pageElement = `<div id="${page.name}" class="page">${page.content}</div>`;
+                        // add the page element to the documentation file
+                        documentationFile = documentationFile.replace('{{additionalPages}}', pageElement + '{{additionalPages}}');
+                    });
+
+                    // return the documentation file
+                    return documentationFile;
+                });
+        }
+
+    </script>
+</body>
+
+</html>
