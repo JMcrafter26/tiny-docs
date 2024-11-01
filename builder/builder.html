@@ -21,7 +21,7 @@
             display: block;
         }
 
-        .step form {
+        .step .form {
             display: flex;
             flex-direction: column;
         }
@@ -170,7 +170,7 @@
         <hr>
         <div id="step1" class="step">
             <h2>Step 1: Details of your Documentation</h2>
-            <form action="#">
+            <div class="form">
                 <label for="docTitle">Title of your Documentation</label>
                 <input type="text" name="docTitle" id="docTitle" placeholder="Optional">
 
@@ -197,7 +197,7 @@
                     <p>If left empty, the description will be set to the first paragraph of the documentation (with
                         JavaScript, which is not recommended).</p>
                 </details>
-            </form>
+            </div>
         </div>
 
         <div id="step2" class="step">
@@ -208,7 +208,7 @@
                     href="https://gist.github.com/JMcrafter26/b6428ddeb6cd40e3fc99ff6df74ff707#file-edited-markdown-cheat-sheet-md"
                     target="_blank" rel="noopener noreferrer">Markdown</a>.
             </p>
-            <form action="#">
+            <div class="form">
                 <label for="docContentIndex">Startpage of your Documentation</label>
                 <input type="text" name="docContentIndexName" id="docContentIndexName" placeholder="Name of the startpage (optional)">
                 <textarea name="docContentIndex" id="docContentIndex" rows="5"
@@ -259,7 +259,7 @@
                             It will be automatically generated if not specified.</li>
                     </ul>
                 </details>
-            </form>
+            </div>
         </div>
 
         <div id="step3" class="step">
@@ -267,7 +267,7 @@
             <p>
                 Your documentation is ready! You can now download it as a single HTML file.
             </p>
-            <form action="#">
+            <div class="form">
                 <button type="button" id="downloadButton">Download <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" class="lucide lucide-download">
@@ -275,7 +275,7 @@
                         <polyline points="7 10 12 15 17 10" />
                         <line x1="12" x2="12" y1="15" y2="3" />
                     </svg></button>
-            </form>
+            </div>
 
             <div class="buttons">
                 <button class="back" type="button">
@@ -289,7 +289,7 @@
 
             <details>
                 <summary>Additonal Options</summary>
-                <form action="#">
+                <div class="form">
                     <label for="downloadSW">You will need the SW.js file if you want to use Tiny Docs offline. This is
                         only needed if the file is hosted on a server. <br><strong>If you are using it as a local html
                             file, you don't need to do this</strong> (it will work offline by default)</label>
@@ -310,7 +310,7 @@
                     <input type="text" name="author" id="author">
 
 
-                </form>
+                </div>
             </details>
         </div>
 
@@ -340,6 +340,8 @@
             document.getElementById('downloadButton').addEventListener('click', () => {
                 // change the text of the button to building...
                 const downloadButton = document.getElementById('downloadButton');
+                // disable the button
+                downloadButton.disabled = true;
                 downloadButton.innerHTML = 'Building' + '<svg class="building" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cog"><path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z"/><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/><path d="M12 2v2"/><path d="M12 22v-2"/><path d="m17 20.66-1-1.73"/><path d="M11 10.27 7 3.34"/><path d="m20.66 17-1.73-1"/><path d="m3.34 7 1.73 1"/><path d="M14 12h8"/><path d="M2 12h2"/><path d="m20.66 7-1.73 1"/><path d="m3.34 17 1.73-1"/><path d="m17 3.34-1 1.73"/><path d="m11 13.73-4 6.93"/></svg>';
                 // build the documentation
                 try {
@@ -348,8 +350,10 @@
                     console.error(error);
                 }
 
-                // change the text of the button back to download
-                downloadButton.innerHTML = 'Download <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>';
+                setTimeout(() => {
+                    downloadButton.disabled = false;
+                    downloadButton.innerHTML = 'Download <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>';
+                }, 700);
             });
 
             // add event listener to the download SW button
@@ -465,11 +469,13 @@
             deleteButton.style.float = 'right';
             deleteButton.style.marginRight = '3px';
 
-            deleteButton.addEventListener('click', function () {
-                page.remove();
-                pageNameLabel.remove();
-                deleteButton.remove();
-            });
+            setTimeout(() => {
+                deleteButton.addEventListener('click', function () {
+                    page.remove();
+                    pageNameLabel.remove();
+                    deleteButton.remove();
+                });
+            }, 1000);
 
             pageNameLabel.appendChild(deleteButton);
 
