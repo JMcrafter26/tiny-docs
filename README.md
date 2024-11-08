@@ -1,7 +1,9 @@
 
 # Tiny Docs
 
-![Banner](https://raw.githubusercontent.com/JMcrafter26/tiny-docs/main/.github/banner.png)
+<div align="center">
+    <img src="https://raw.githubusercontent.com/JMcrafter26/tiny-docs/main/.github/banner.png" alt="Banner" width="100%">
+</div>
 
 [![GitHub license](https://img.shields.io/github/license/JMcrafter26/tiny-docs)](LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/JMcrafter26/tiny-docs)](https.//github/license/JMcrafter26/tiny-docs)
@@ -16,7 +18,7 @@ Tiny Docs is a simple and lightweight (single file!) documentation template that
 - 📦 **Zero dependencies** - No need for a build step or package manager. (Although there are tools to make it even smaller)
 - 🎨 **Customizable** - Change the CSS to fit your style
 - 📱 **Responsive** - Works on all devices
-- 🚀 **Fast** - Loads _extremely_ fast
+- 🚀 **Fast** - Loads fast
 
 ## Use cases
 
