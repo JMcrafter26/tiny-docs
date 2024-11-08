@@ -742,6 +742,19 @@ function snarkdown(md) {
           });
         });
 
+const openBtn = document.querySelector(".openBtn");
+        // toggle active class on the nav
+        openBtn.addEventListener("click", () => {
+          document.querySelector("nav").classList.toggle("active");
+          openBtn.classList.toggle("active");
+          document.querySelector(".content").classList.toggle("active");
+        });
+
+        // userscrolling timestamp + 1 second
+        window.userScrolling = (Date.now() + 100);
+
+
+
         // Handle scroll events for updating active navigation link
         window.addEventListener("scroll", () => {
           if (Date.now() < window.userScrolling) return;
