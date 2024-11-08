@@ -791,7 +791,10 @@ function snarkdown(md) {
           const tempDiv = document.createElement("div");
           tempDiv.innerHTML = htmlContent;
           tempDiv.querySelectorAll("h1, h2, h3, h4, h5, h6").forEach((heading) => {
-            const id = heading.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+            let id = heading.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+            // if there are non a-z0-9 characters, remove them
+            id = id.replace(/[^a-z0-9-]/g, '');
+            
             heading.setAttribute("id", id);
           });
           pg.innerHTML = tempDiv.innerHTML;
